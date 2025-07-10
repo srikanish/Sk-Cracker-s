@@ -57,15 +57,15 @@ It includes a fully functional **admin panel**, dynamic product cart system, sta
 
 ## 💡 **Future Enhancements**
 
-- 🔹 Payment gateway (Razorpay, PhonePe, etc.)  
-- 🔹 Admin login & authentication  
-- 🔹 PDF invoice generation  
-- 🔹 Product search & filter  
-- 🔹 Delivery tracking dashboard
+  🔹 Payment gateway (Razorpay, PhonePe, etc.)  
+  🔹 Admin login & authentication  
+  🔹 PDF invoice generation  
+  🔹 Product search & filter  
+  🔹 Delivery tracking dashboard
 
 ## 🧾 **Invoice & Client Delivery**
 
-- ✅ Project delivered with admin panel  
-- ✅ Live link hosted  
-- ✅ Client can integrate UPI/Payment with guidance  
-- 💰 Payment option kept open and secured for client use
+  ✅ Project delivered with admin panel  
+  ✅ Live link hosted  
+  ✅ Client can integrate UPI/Payment with guidance  
+  💰 Payment option kept open and secured for client use
