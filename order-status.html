@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Status - SK Crackers</title>
+    <link rel="icon" href="./assets/logo-transparent.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Arial", sans-serif;
+            overflow-x: hidden;
+            background: #f8fafc;
+            line-height: 1.6;
+        }
+        /* Header Styles */
+        .header {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        .header.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+        .nav-item {
+            position: relative;
+        }
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-link:hover {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        .order-btn {
+            background: linear-gradient(45deg, #ff6b35, #ffd700);
+            color: #000;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+        .order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+            background: linear-gradient(45deg, #ffd700, #ff6b35);
+        }
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .mobile-menu-toggle:hover {
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-top: 70px;
+            min-height: calc(100vh - 70px);
+        }
+        .enquiry-form-section {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            min-height: calc(100vh - 70px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .enquiry-form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10zm10 8c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm40 40c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .form-container {
+            max-width: 450px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+        .form-wrapper {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .form-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .form-header h1 {
+            font-size: 2rem;
+            color: #1e293b;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .form-header p {
+            font-size: 1rem;
+            color: #64748b;
+        }
+        .enquiry-form {
+            width: 100%;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-label {
+            display: block;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+        .input-wrapper {
+            position: relative;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
+            font-size: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 1rem;
+        }
+        .search-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4);
+            background: linear-gradient(45deg, #1d4ed8, #1e40af);
+        }
+        .search-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        /* Loading Spinner */
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ffffff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Results Section */
+        .results-section {
+            margin-top: 25px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            display: none;
+        }
+        .results-section.show {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+        .result-card {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 2px solid #0ea5e9;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(14, 165, 233, 0.1);
+        }
+        .not-found-card {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border: 2px solid #ef4444;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.1);
+            text-align: center;
+        }
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .success-icon {
+            font-size: 1.5rem;
+            color: #10b981;
+        }
+        .error-icon {
+            font-size: 1.5rem;
+            color: #ef4444;
+        }
+        .result-header h3 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            font-weight: bold;
+        }
+        .not-found-header h3 {
+            color: #dc2626;
+        }
+        .result-details {
+            margin-bottom: 25px;
+        }
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(14, 165, 233, 0.1);
+        }
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        .detail-label {
+            font-weight: bold;
+            color: #374151;
+            font-size: 1rem;
+        }
+        .detail-value {
+            color: #1e293b;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .status-confirmed {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .status-shipped {
+            background: #e0e7ff;
+            color: #5b21b6;
+        }
+        .status-dispatched {
+            background: #f3e8ff;
+            color: #7c2d12;
+        }
+        .status-delivered {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .status-cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .products-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+        }
+        .products-title {
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 10px;
+        }
+        .product-item {
+            background: #f1f5f9;
+            padding: 8px 12px;
+            margin: 5px 0;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            display: block;
+        }
+        .result-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .whatsapp-btn {
+            background: linear-gradient(45deg, #25d366, #128c7e);
+            color: white;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+        .whatsapp-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+        }
+        .call-btn {
+            background: linear-gradient(45deg, #ef4444, #dc2626);
+            color: white;
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+        }
+        .call-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+        }
+        .not-found-message {
+            color: #dc2626;
+            font-size: 1.1rem;
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+        .try-again-btn {
+            background: linear-gradient(45deg, #6366f1, #4f46e5);
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+        .try-again-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding-top: 50px;
+                transition: left 0.3s ease;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            }
+            .nav-menu.active {
+                left: 0;
+            }
+            .nav-menu .nav-link {
+                color: #fff;
+                padding: 15px 0;
+                font-size: 1.1rem;
+            }
+            .nav-menu .nav-link:hover {
+                color: #ffd700;
+                background: rgba(255, 215, 0, 0.1);
+            }
+            .enquiry-form-section {
+                padding: 15px;
+            }
+            .form-wrapper {
+                padding: 25px 20px;
+            }
+            .form-header h1 {
+                font-size: 1.8rem;
+            }
+            .result-actions {
+                flex-direction: column;
+            }
+            .action-btn {
+                justify-content: center;
+            }
+        }
+        @media (max-width: 480px) {
+            .form-wrapper {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-text">SK Cracker's</span>
+            </div>
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li class="nav-item">
+                        <a href="#home" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#about" class="nav-link">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="./Safety-Tips.html" class="nav-link">Safety Tips</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="./order-status.html" class="nav-link">Order Status</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="./contect.html" class="nav-link">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="./order.html" class="order-btn">Order Now</a>
+                    </li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-toggle" id="mobileToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Enquiry Form Section -->
+        <section class="enquiry-form-section">
+            <div class="form-container">
+                <div class="form-wrapper">
+                    <div class="form-header">
+                        <h1>Check Your Order Status</h1>
+                        <p>Enter your details to track your order</p>
+                    </div>
+                    
+                    <form class="enquiry-form" id="enquiryForm">
+                        <!-- Name Field -->
+                        <div class="form-group">
+                            <label for="customerName" class="form-label">Full Name</label>
+                            <div class="input-wrapper">
+                                <input 
+                                    type="text"
+                                    id="customerName"
+                                    name="customerName"
+                                    placeholder="Enter your full name *"
+                                    required
+                                    class="form-input"
+                                >
+                                <i class="fas fa-user input-icon"></i>
+                            </div>
+                        </div>
+                        <!-- Mobile Number Field -->
+                        <div class="form-group">
+                            <label for="mobileNo" class="form-label">Mobile Number</label>
+                            <div class="input-wrapper">
+                                <input 
+                                    type="tel"
+                                    id="mobileNo"
+                                    name="mobileNo"
+                                    placeholder="Enter mobile number *"
+                                    required
+                                    maxlength="10"
+                                    pattern="[0-9]{10}"
+                                    class="form-input"
+                                >
+                                <i class="fas fa-phone input-icon"></i>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="search-btn" id="searchBtn">
+                            <i class="fas fa-search"></i>
+                            <span>Search</span>
+                        </button>
+                    </form>
+                    
+                    <!-- Results Section (Hidden by default) -->
+                    <div class="results-section" id="resultsSection">
+                        <!-- Found Result -->
+                        <div class="result-card" id="foundResult" style="display: none;">
+                            <div class="result-header">
+                                <i class="fas fa-check-circle success-icon"></i>
+                                <h3>Order Found!</h3>
+                            </div>
+                            <div class="result-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Order ID:</span>
+                                    <span class="detail-value" id="orderId">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Name:</span>
+                                    <span class="detail-value" id="displayName">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Status:</span>
+                                    <span class="detail-value status-badge" id="orderStatus">Processing</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Order Date:</span>
+                                    <span class="detail-value" id="orderDate">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Amount:</span>
+                                    <span class="detail-value" id="orderAmount">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Mobile:</span>
+                                    <span class="detail-value" id="contactInfo">-</span>
+                                </div>
+                            </div>
+                            <div class="products-section">
+                                <div class="products-title">Ordered Products:</div>
+                                <div id="productsList"></div>
+                            </div>
+                            <div class="result-actions">
+                                <button class="action-btn whatsapp-btn" id="whatsappBtn">
+                                    <i class="fab fa-whatsapp"></i>
+                                    WhatsApp Us
+                                </button>
+                                <button class="action-btn call-btn" id="callBtn">
+                                    <i class="fas fa-phone"></i>
+                                    Call Now
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Not Found Result -->
+                        <div class="not-found-card" id="notFoundResult" style="display: none;">
+                            <div class="result-header not-found-header">
+                                <i class="fas fa-times-circle error-icon"></i>
+                                <h3>Order Not Found!</h3>
+                            </div>
+                            <div class="not-found-message">
+                                Sorry, we couldn't find any order with the provided details. Please check your name and mobile number, or contact us directly for assistance.
+                            </div>
+                            <button class="try-again-btn" onclick="resetForm()">
+                                <i class="fas fa-redo"></i>
+                                Try Again
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileToggle = document.getElementById('mobileToggle');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (mobileToggle && navMenu) {
+                mobileToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    navMenu.classList.toggle('active');
+                    
+                    const icon = mobileToggle.querySelector('i');
+                    if (icon) {
+                        if (navMenu.classList.contains('active')) {
+                            icon.classList.remove('fa-bars');
+                            icon.classList.add('fa-times');
+                        } else {
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        }
+                    }
+                });
+            }
+        });
+
+        // Search customer in database via API
+        function searchCustomer(name, mobile) {
+    return fetch(`http://localhost:8081/api/orders/search?mobile=${mobile}`)
+        .then(res => res.json())
+        .then(orders => {
+            // Find ALL orders that match both name and mobile
+            return orders.filter(order => 
+                order.customerName.toLowerCase().includes(name.toLowerCase()) &&
+                order.mobileNo === mobile
+            );
+        })
+        .catch(err => {
+            console.error('Error searching orders:', err);
+            return [];
+        });
+}
+
+        // Get status class for styling
+        function getStatusClass(status) {
+            switch (status?.toLowerCase()) {
+                case 'pending payment':
+                case 'pending':
+                    return 'status-pending';
+                case 'confirmed':
+                    return 'status-confirmed';
+                case 'shipped':
+                    return 'status-shipped';
+                case 'dispatched':
+                    return 'status-dispatched';
+                case 'delivered':
+                    return 'status-delivered';
+                case 'cancelled':
+                    return 'status-cancelled';
+                default:
+                    return 'status-pending';
+            }
+        }
+
+        // Display multiple orders for the same customer
+function displayMultipleOrders(orders) {
+    const foundResult = document.getElementById('foundResult');
+    
+    // Clear previous content
+    foundResult.innerHTML = '';
+    
+    // Create header
+    const header = document.createElement('div');
+    header.className = 'result-header';
+    header.innerHTML = `
+        <i class="fas fa-check-circle success-icon"></i>
+        <h3>Orders Found! (${orders.length} order${orders.length > 1 ? 's' : ''})</h3>
+    `;
+    foundResult.appendChild(header);
+    
+    // Display each order
+    orders.forEach((order, index) => {
+        const orderCard = document.createElement('div');
+        orderCard.style.cssText = `
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #0ea5e9;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        `;
+        
+        // Format date
+        const orderDate = new Date(order.dateTime);
+        const formattedDate = orderDate.toLocaleDateString('en-IN');
+        const formattedTime = orderDate.toLocaleTimeString('en-IN', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        // Create products list
+        let productsHtml = '';
+        if (order.productList && order.productList.length > 0) {
+            productsHtml = order.productList.map(product => 
+                `<div class="product-item">${product}</div>`
+            ).join('');
+        } else {
+            productsHtml = '<div class="product-item">No products listed</div>';
+        }
+        
+        orderCard.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h4 style="color: #1e293b; font-size: 1.2rem; margin: 0;">Order #${order.id}</h4>
+                <span class="status-badge ${getStatusClass(order.status)}">${order.status}</span>
+            </div>
+            
+            <div class="result-details">
+                <div class="detail-item">
+                    <span class="detail-label">Customer Name:</span>
+                    <span class="detail-value">${order.customerName}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Mobile:</span>
+                    <span class="detail-value">+91 ${order.mobileNo}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Order Date:</span>
+                    <span class="detail-value">${formattedDate} at ${formattedTime}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Amount:</span>
+                    <span class="detail-value" style="color: #059669; font-weight: bold;">₹${order.amount.toFixed(2)}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Address:</span>
+                    <span class="detail-value">${order.customerAddress}</span>
+                </div>
+            </div>
+            
+            <div class="products-section">
+                <div class="products-title">Ordered Products:</div>
+                <div>${productsHtml}</div>
+            </div>
+            
+            <div class="result-actions">
+                <button class="action-btn whatsapp-btn" onclick="contactForOrder('${order.id}', '${order.customerName}', '${order.mobileNo}')">
+                    <i class="fab fa-whatsapp"></i>
+                    WhatsApp for Order #${order.id}
+                </button>
+                <button class="action-btn call-btn" onclick="callForOrder()">
+                    <i class="fas fa-phone"></i>
+                    Call Now
+                </button>
+            </div>
+        `;
+        
+        foundResult.appendChild(orderCard);
+    });
+}
+
+// Contact for specific order
+function contactForOrder(orderId, customerName, mobileNo) {
+    const message = encodeURIComponent(
+        `Hi, I'm ${customerName} (${mobileNo}). I want to check my order status for Order #${orderId} - SK Crackers`
+    );
+    window.open(`https://wa.me/917845229961?text=${message}`, '_blank');
+}
+
+// Call function
+function callForOrder() {
+    window.open('tel:+917845229961');
+}
+
+        // Reset Form Function
+        function resetForm() {
+            document.getElementById('enquiryForm').reset();
+            document.getElementById('resultsSection').classList.remove('show');
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('foundResult').style.display = 'none';
+            document.getElementById('notFoundResult').style.display = 'none';
+        }
+
+        // Form submission handler
+        document.getElementById('enquiryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const customerName = document.getElementById('customerName').value.trim();
+            const mobileNo = document.getElementById('mobileNo').value.trim();
+            const resultsSection = document.getElementById('resultsSection');
+            const foundResult = document.getElementById('foundResult');
+            const notFoundResult = document.getElementById('notFoundResult');
+            const searchBtn = document.getElementById('searchBtn');
+            
+            // Validate inputs
+            if (!customerName) {
+                alert('Please enter your full name');
+                document.getElementById('customerName').focus();
+                return;
+            }
+            
+            if (mobileNo.length !== 10 || !/^[0-9]+$/.test(mobileNo)) {
+                alert('Please enter a valid 10-digit mobile number');
+                document.getElementById('mobileNo').focus();
+                return;
+            }
+            
+            // Show loading state
+            const originalContent = searchBtn.innerHTML;
+            searchBtn.innerHTML = '<div class="spinner"></div><span>Searching...</span>';
+            searchBtn.disabled = true;
+            
+            // Search in database via API
+searchCustomer(customerName, mobileNo)
+    .then(orders => {
+        if (orders && orders.length > 0) {
+            // Orders found - show all orders
+            displayMultipleOrders(orders);
+            foundResult.style.display = 'block';
+            notFoundResult.style.display = 'none';
+        } else {
+            // No orders found - show not found result
+            foundResult.style.display = 'none';
+            notFoundResult.style.display = 'block';
+        }
+        
+        // Show results section
+        resultsSection.style.display = 'block';
+        resultsSection.classList.add('show');
+        
+        // Reset button
+        searchBtn.innerHTML = originalContent;
+        searchBtn.disabled = false;
+        
+        // Scroll to results
+        setTimeout(() => {
+            resultsSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }, 300);
+    })
+                .catch(err => {
+                    console.error('Search error:', err);
+                    // Show not found on error
+                    foundResult.style.display = 'none';
+                    notFoundResult.style.display = 'block';
+                    resultsSection.style.display = 'block';
+                    resultsSection.classList.add('show');
+                    
+                    // Reset button
+                    searchBtn.innerHTML = originalContent;
+                    searchBtn.disabled = false;
+                });
+        });
+
+        // WhatsApp button handler
+        document.getElementById('whatsappBtn').addEventListener('click', function() {
+            const customerName = document.getElementById('displayName').textContent;
+            const mobileNo = document.getElementById('mobileNo').value;
+            const orderId = document.getElementById('orderId').textContent;
+            const message = encodeURIComponent(`Hi, I'm ${customerName} (${mobileNo}). I want to check my order status for Order ${orderId} - SK Crackers`);
+            window.open(`https://wa.me/917845229961?text=${message}`, '_blank');
+        });
+
+        // Call button handler
+        document.getElementById('callBtn').addEventListener('click', function() {
+            window.open('tel:+917845229961');
+        });
+
+        // Input formatting for mobile number
+        document.getElementById('mobileNo').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+        });
+
+        // Name input validation (only letters and spaces)
+        document.getElementById('customerName').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+        });
+    </script>
+</body>
+</html>
