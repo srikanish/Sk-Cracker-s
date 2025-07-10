@@ -1,14 +1,13 @@
 ## 🧨 SK Crackers – Festival E-Commerce Website
 
 🎉 A custom-built online crackers ordering platform created for client delivery.
----
 
 # 🏷️ **Project Summary**
 
 **SK Crackers** is a modern, mobile-responsive e-commerce website developed specifically for selling premium fireworks.  
 It includes a fully functional **admin panel**, dynamic product cart system, state-based restrictions, and a **client-ready payment placeholder** for future integration.
 
----
+
 
  🌟 **Key Features**
 
@@ -20,7 +19,7 @@ It includes a fully functional **admin panel**, dynamic product cart system, sta
 - ✅ Spring Boot backend with PostgreSQL database  
 - ✅ Ready for payment gateway integration
 
----
+
 
 ## 🔐 **Admin Dashboard (Private)**
 
@@ -28,13 +27,12 @@ It includes a fully functional **admin panel**, dynamic product cart system, sta
 - Displays all user orders stored in the database  
 - Future scope: login protection and order status update system
 
----
 
 ## 🔗 **Live Preview**
 
 🌐 [SK Crackers Demo](https://sk-crackers-60039108644.development.catalystserverless.in/app/index.html)
 
----
+
 
 ## 🏗️ **Technologies Used**
 
@@ -43,7 +41,6 @@ It includes a fully functional **admin panel**, dynamic product cart system, sta
 - **Database**: PostgreSQL  
 - **Hosting**: Zoho Catalyst
 
----
 
 ## 📁 **Folder Structure**
 
@@ -57,7 +54,6 @@ It includes a fully functional **admin panel**, dynamic product cart system, sta
 | `/backend/OrderController.java` | API controller             |
 | `/backend/OrderRepository.java` | DB layer                   |
 
----
 
 ## 💡 **Future Enhancements**
 
@@ -66,8 +62,6 @@ It includes a fully functional **admin panel**, dynamic product cart system, sta
 - 🔹 PDF invoice generation  
 - 🔹 Product search & filter  
 - 🔹 Delivery tracking dashboard
-
----
 
 ## 🧾 **Invoice & Client Delivery**
 
