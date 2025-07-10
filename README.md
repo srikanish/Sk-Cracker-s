@@ -10,7 +10,7 @@ It includes a fully functional **admin panel**, dynamic product cart system, sta
 
 ---
 
-## 🌟 **Key Features**
+🌟 **Key Features**
 
 - ✅ Beautiful landing page with Diwali theme  
 - ✅ Dynamic product listing with cart and quantity controls  
