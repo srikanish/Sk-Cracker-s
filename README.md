@@ -1,9 +1,9 @@
-# 🧨 SK Crackers – Festival E-Commerce Website
+## 🧨 SK Crackers – Festival E-Commerce Website
 
 🎉 A custom-built online crackers ordering platform created for client delivery.
 ---
 
-## 🏷️ **Project Summary**
+# 🏷️ **Project Summary**
 
 **SK Crackers** is a modern, mobile-responsive e-commerce website developed specifically for selling premium fireworks.  
 It includes a fully functional **admin panel**, dynamic product cart system, state-based restrictions, and a **client-ready payment placeholder** for future integration.
