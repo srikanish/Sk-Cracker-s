@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - SK Crackers</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #ff6b35, #f59e0b);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .controls {
+            padding: 30px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .search-container {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 1.2rem;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .stat-item {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #ff6b35;
+        }
+        
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-top: 5px;
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(45deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+        
+        .table-container {
+            padding: 30px;
+            overflow-x: auto;
+        }
+        
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .orders-table th {
+            background: linear-gradient(45deg, #1e293b, #334155);
+            color: white;
+            padding: 20px 15px;
+            text-align: left;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        
+        .orders-table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: top;
+        }
+        
+        .orders-table tr:hover {
+            background-color: #f8fafc;
+        }
+        
+        .orders-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-confirmed {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .status-shipped {
+            background: #e0e7ff;
+            color: #5b21b6;
+        }
+        
+        .status-dispatched {
+            background: #f3e8ff;
+            color: #7c2d12;
+        }
+        
+        .status-delivered {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .amount {
+            font-weight: bold;
+            color: #059669;
+            font-size: 1.1rem;
+        }
+        
+        .products-list {
+            max-width: 250px;
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+        
+        .product-item {
+            background: #f1f5f9;
+            padding: 4px 8px;
+            margin: 2px 0;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        
+        .no-orders {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+        
+        .no-orders i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #cbd5e1;
+        }
+        
+        .no-orders h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+        
+        .loading i {
+            font-size: 3rem;
+            animation: spin 1s linear infinite;
+            color: #ff6b35;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 15px 20px;
+            margin: 20px 30px;
+            border-radius: 8px;
+            border-left: 4px solid #dc2626;
+        }
+        
+        /* Status Update Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h3 {
+            color: #1e293b;
+            font-size: 1.5rem;
+        }
+        
+        .status-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .status-option {
+            padding: 12px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .status-option:hover {
+            border-color: #ff6b35;
+            background: #fef3c7;
+        }
+        
+        .status-option.selected {
+            border-color: #ff6b35;
+            background: #ff6b35;
+            color: white;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .update-btn {
+            background: #10b981;
+            color: white;
+        }
+        
+        .cancel-btn {
+            background: #6b7280;
+            color: white;
+        }
+        
+        .modal-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Product View Modal */
+        .product-modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+        }
+
+        .product-modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .product-modal-header {
+            background: linear-gradient(45deg, #ff6b35, #f59e0b);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-modal-header h3 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .close-product-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-product-modal:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .product-modal-body {
+            padding: 30px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .product-table th {
+            background: linear-gradient(45deg, #1e293b, #334155);
+            color: white;
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .product-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: middle;
+        }
+
+        .product-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        .product-table tr:hover {
+            background-color: #e0f2fe;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .product-quantity {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-align: center;
+            min-width: 40px;
+            display: inline-block;
+        }
+
+        .no-products {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748b;
+        }
+
+        .no-products i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #cbd5e1;
+        }
+
+        .export-btn {
+            background: linear-gradient(45deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .view-products-btn {
+            background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .view-products-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .product-modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+            
+            .product-modal-body {
+                padding: 20px;
+            }
+            
+            .product-table th,
+            .product-table td {
+                padding: 8px 6px;
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .controls {
+                padding: 20px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-container {
+                min-width: auto;
+            }
+            
+            .stats {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .table-container {
+                padding: 20px;
+            }
+            
+            .orders-table {
+                font-size: 0.9rem;
+            }
+            
+            .orders-table th,
+            .orders-table td {
+                padding: 12px 8px;
+            }
+            
+            .products-list {
+                max-width: 150px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .stat-item {
+                padding: 10px 15px;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-fire"></i> SK Crackers</h1>
+            <p>Admin Dashboard - Order Management</p>
+        </div>
+        
+        <div class="controls">
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    class="search-input"
+                    placeholder="Search by mobile number, name, or address..." 
+                    oninput="filterOrders()"
+                />
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalOrders">0</div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalRevenue">₹0</div>
+                    <div class="stat-label">Total Revenue</div>
+                </div>
+            </div>
+            
+            <button class="refresh-btn" onclick="fetchOrders()">
+                <i class="fas fa-sync-alt"></i>
+                Refresh
+            </button>
+        </div>
+        
+        <div class="table-container">
+            <div id="loadingMessage" class="loading">
+                <i class="fas fa-spinner"></i>
+                <p>Loading orders...</p>
+            </div>
+            
+            <div id="errorMessage" class="error-message" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span id="errorText"></span>
+            </div>
+            
+            <table class="orders-table" id="ordersTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-hashtag"></i> ID</th>
+                        <th><i class="fas fa-user"></i> Customer Name</th>
+                        <th><i class="fas fa-phone"></i> Mobile</th>
+                        <th><i class="fas fa-map-marker-alt"></i> Address</th>
+                        <th><i class="fas fa-shopping-cart"></i> Products</th>
+                        <th><i class="fas fa-rupee-sign"></i> Amount</th>
+                        <th><i class="fas fa-calendar"></i> Date & Time</th>
+                        <th><i class="fas fa-info-circle"></i> Status</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersBody">
+                    <!-- Orders will be populated here -->
+                </tbody>
+            </table>
+            
+            <div id="noOrdersMessage" class="no-orders" style="display: none;">
+                <i class="fas fa-inbox"></i>
+                <h3>No Orders Found</h3>
+                <p>No orders match your search criteria or no orders have been placed yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Update Modal -->
+    <div id="statusModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Update Order Status</h3>
+                <p>Order ID: <span id="modalOrderId"></span></p>
+            </div>
+            <div class="status-options">
+                <div class="status-option" data-status="Pending Payment">Pending Payment</div>
+                <div class="status-option" data-status="Confirmed">Confirmed</div>
+                <div class="status-option" data-status="Shipped">Shipped</div>
+                <div class="status-option" data-status="Dispatched">Dispatched</div>
+                <div class="status-option" data-status="Delivered">Delivered</div>
+                <div class="status-option" data-status="Cancelled">Cancelled</div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn update-btn" onclick="updateOrderStatus()">Update</button>
+                <button class="modal-btn cancel-btn" onclick="closeStatusModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product View Modal -->
+    <div id="productModal" class="product-modal">
+        <div class="product-modal-content">
+            <div class="product-modal-header">
+                <div>
+                    <h3>Product Details</h3>
+                    <p style="margin: 5px 0 0 0; opacity: 0.9;">
+                        Order #<span id="productModalOrderId"></span> - <span id="productModalCustomer"></span>
+                    </p>
+                </div>
+                <button class="close-product-modal" onclick="closeProductModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="product-modal-body">
+                <table class="product-table" id="productTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 80px;">S.No</th>
+                            <th>Product Name</th>
+                            <th style="width: 120px;">Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody">
+                        <!-- Products will be populated here -->
+                    </tbody>
+                </table>
+                
+                <div id="noProductsMessage" class="no-products" style="display: none;">
+                    <i class="fas fa-box-open"></i>
+                    <h4>No Products Found</h4>
+                    <p>This order doesn't have any products listed.</p>
+                </div>
+                
+                <button class="export-btn" onclick="exportToExcel()">
+                    <i class="fas fa-file-excel"></i>
+                    Export to Excel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allOrders = [];
+        let filteredOrders = [];
+        let currentOrderId = null;
+        let selectedStatus = null;
+
+        // Fetch orders from backend
+        function fetchOrders() {
+            const loadingMessage = document.getElementById('loadingMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const ordersTable = document.getElementById('ordersTable');
+            const noOrdersMessage = document.getElementById('noOrdersMessage');
+            
+            // Show loading
+            loadingMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+            ordersTable.style.display = 'none';
+            noOrdersMessage.style.display = 'none';
+            
+            fetch("http://localhost:8081/api/orders")
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    console.log("✅ Orders fetched:", data);
+                    allOrders = data;
+                    filteredOrders = [...allOrders];
+                    displayOrders();
+                    updateStats();
+                    loadingMessage.style.display = 'none';
+                    
+                    if (data.length === 0) {
+                        noOrdersMessage.style.display = 'block';
+                    } else {
+                        ordersTable.style.display = 'table';
+                    }
+                })
+                .catch(err => {
+                    console.error("❌ Failed to load orders:", err);
+                    loadingMessage.style.display = 'none';
+                    errorMessage.style.display = 'block';
+                    document.getElementById('errorText').textContent = 
+                        `Failed to load orders: ${err.message}. Please check if the backend server is running on port 8081.`;
+                });
+        }
+
+        // Display orders in table
+        function displayOrders() {
+            const tbody = document.getElementById("ordersBody");
+            const ordersTable = document.getElementById('ordersTable');
+            const noOrdersMessage = document.getElementById('noOrdersMessage');
+            
+            tbody.innerHTML = "";
+            
+            if (filteredOrders.length === 0) {
+                ordersTable.style.display = 'none';
+                noOrdersMessage.style.display = 'block';
+                return;
+            }
+            
+            ordersTable.style.display = 'table';
+            noOrdersMessage.style.display = 'none';
+            
+            filteredOrders.forEach(order => {
+                const row = document.createElement("tr");
+                
+                // Format date
+                const orderDate = new Date(order.dateTime);
+                const formattedDate = orderDate.toLocaleDateString('en-IN', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+                const formattedTime = orderDate.toLocaleTimeString('en-IN', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                // Format products with view button
+                const productsDisplay = (order.productList && order.productList.length > 0) 
+                    ? `<button class="view-products-btn" onclick="openProductModal(${order.id}, '${order.customerName}', ${JSON.stringify(order.productList).replace(/"/g, '&quot;')})">
+                         <i class="fas fa-eye"></i> View Products (${order.productList.length})
+                       </button>`
+                    : '<span style="color: #64748b; font-style: italic;">No products</span>';
+                
+                // Status badge
+                const statusClass = getStatusClass(order.status);
+                
+                row.innerHTML = `
+                    <td><strong>#${order.id}</strong></td>
+                    <td><strong>${order.customerName}</strong></td>
+                    <td>
+                        <i class="fas fa-phone" style="color: #10b981; margin-right: 5px;"></i>
+                        +91 ${order.mobileNo}
+                    </td>
+                    <td>${order.customerAddress}</td>
+                    <td class="products-list">${productsDisplay}</td>
+                    <td class="amount">₹${order.amount.toFixed(2)}</td>
+                    <td>
+                        <div>${formattedDate}</div>
+                        <small style="color: #64748b;">${formattedTime}</small>
+                    </td>
+                    <td>
+                        <span class="status-badge ${statusClass}" onclick="openStatusModal(${order.id}, '${order.status}')">${order.status}</span>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+
+        // Get status class for styling
+        function getStatusClass(status) {
+            switch (status?.toLowerCase()) {
+                case 'pending payment':
+                case 'pending':
+                    return 'status-pending';
+                case 'confirmed':
+                    return 'status-confirmed';
+                case 'shipped':
+                    return 'status-shipped';
+                case 'dispatched':
+                    return 'status-dispatched';
+                case 'delivered':
+                    return 'status-delivered';
+                case 'cancelled':
+                    return 'status-cancelled';
+                default:
+                    return 'status-pending';
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            const totalOrders = allOrders.length;
+            const totalRevenue = allOrders.reduce((sum, order) => sum + (order.amount || 0), 0);
+            
+            document.getElementById('totalOrders').textContent = totalOrders;
+            document.getElementById('totalRevenue').textContent = `₹${totalRevenue.toFixed(2)}`;
+        }
+
+        // Filter orders based on search input
+        function filterOrders() {
+            const searchTerm = document.getElementById("searchInput").value.toLowerCase().trim();
+            
+            if (searchTerm === "") {
+                filteredOrders = [...allOrders];
+            } else {
+                filteredOrders = allOrders.filter(order =>
+                    order.customerName.toLowerCase().includes(searchTerm) ||
+                    order.mobileNo.includes(searchTerm) ||
+                    order.customerAddress.toLowerCase().includes(searchTerm) ||
+                    (order.productList || []).some(product => 
+                        product.toLowerCase().includes(searchTerm)
+                    )
+                );
+            }
+            
+            displayOrders();
+        }
+
+        // Status Modal Functions
+        function openStatusModal(orderId, currentStatus) {
+            currentOrderId = orderId;
+            selectedStatus = currentStatus;
+            
+            document.getElementById('modalOrderId').textContent = orderId;
+            document.getElementById('statusModal').style.display = 'block';
+            
+            // Reset selections
+            document.querySelectorAll('.status-option').forEach(option => {
+                option.classList.remove('selected');
+                if (option.dataset.status === currentStatus) {
+                    option.classList.add('selected');
+                }
+            });
+        }
+
+        function closeStatusModal() {
+            document.getElementById('statusModal').style.display = 'none';
+            currentOrderId = null;
+            selectedStatus = null;
+        }
+
+        // Status option selection
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.status-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.status-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedStatus = this.dataset.status;
+                });
+            });
+        });
+
+        // Update order status
+        function updateOrderStatus() {
+            if (!currentOrderId || !selectedStatus) {
+                alert('Please select a status');
+                return;
+            }
+
+            fetch(`http://localhost:8081/api/orders/${currentOrderId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: selectedStatus })
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log('Status updated:', data);
+                closeStatusModal();
+                fetchOrders(); // Refresh the orders
+                alert('Order status updated successfully!');
+            })
+            .catch(err => {
+                console.error('Error updating status:', err);
+                alert('Failed to update status. Please try again.');
+            });
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('statusModal');
+            if (event.target === modal) {
+                closeStatusModal();
+            }
+        }
+
+        // Product Modal Functions
+        function openProductModal(orderId, customerName, productList) {
+            document.getElementById('productModalOrderId').textContent = orderId;
+            document.getElementById('productModalCustomer').textContent = customerName;
+            
+            const tbody = document.getElementById('productTableBody');
+            tbody.innerHTML = '';
+            
+            if (productList && productList.length > 0) {
+                productList.forEach((product, index) => {
+                    // Parse product string to extract name and quantity
+                    const productParts = product.split(' x ');
+                    const productName = productParts[0] || product;
+                    const quantity = productParts[1] || '1';
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td class="product-name">${productName}</td>
+                <td><span class="product-quantity">${quantity}</span></td>
+            `;
+            tbody.appendChild(row);
+        });
+        
+        document.getElementById('productTable').style.display = 'table';
+        document.getElementById('noProductsMessage').style.display = 'none';
+    } else {
+        document.getElementById('productTable').style.display = 'none';
+        document.getElementById('noProductsMessage').style.display = 'block';
+    }
+    
+    document.getElementById('productModal').style.display = 'block';
+}
+
+function closeProductModal() {
+    document.getElementById('productModal').style.display = 'none';
+}
+
+function exportToExcel() {
+    const orderId = document.getElementById('productModalOrderId').textContent;
+    const customerName = document.getElementById('productModalCustomer').textContent;
+    const table = document.getElementById('productTable');
+    
+    if (!table || table.style.display === 'none') {
+        alert('No products to export');
+        return;
+    }
+    
+    // Create CSV content
+    let csvContent = `Order ID: ${orderId}\nCustomer: ${customerName}\n\n`;
+    csvContent += "S.No,Product Name,Quantity\n";
+    
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const rowData = Array.from(cells).map(cell => {
+            // Clean the text content
+            return cell.textContent.trim().replace(/,/g, ';');
+        });
+        csvContent += rowData.join(',') + '\n';
+    });
+    
+    // Create and download file
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `Order_${orderId}_Products.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+// Close product modal when clicking outside
+window.addEventListener('click', function(event) {
+    const productModal = document.getElementById('productModal');
+    if (event.target === productModal) {
+        closeProductModal();
+    }
+});
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchOrders();
+            
+            // Auto-refresh every 30 seconds
+            setInterval(fetchOrders, 30000);
+        });
+
+        // Add keyboard shortcut for refresh (Ctrl+R or F5)
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey && e.key === 'r') || e.key === 'F5') {
+                e.preventDefault();
+                fetchOrders();
+            }
+        });
+    </script>
+</body>
+</html>
