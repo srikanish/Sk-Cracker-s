@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions - SK Crackers 🎆</title>
+    <link rel="icon" href="./assets/logo-transparent.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./CSS/styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #fefce8 0%, #fef3c7 50%, #fef2f2 100%);
+            min-height: 100vh;
+        }
+
+        /* Animated Header */
+        .hero-header {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #fbbf24 0%, #f97316 50%, #dc2626 100%);
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .hero-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .hero-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .sparkle {
+            font-size: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            color: #fef3c7;
+            max-width: 32rem;
+            margin: 0 auto;
+        }
+
+        /* Decorative Elements */
+        .decoration {
+            position: absolute;
+            font-size: 2rem;
+            color: #fde047;
+        }
+
+        .decoration-1 {
+            top: 2.5rem;
+            left: 2.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        .decoration-2 {
+            top: 5rem;
+            right: 5rem;
+            animation: pulse 3s infinite;
+        }
+
+        .decoration-3 {
+            bottom: 2.5rem;
+            left: 5rem;
+            font-size: 3rem;
+            animation: bounce 2.5s infinite;
+        }
+
+        .decoration-4 {
+            bottom: 5rem;
+            right: 2.5rem;
+            animation: pulse 2.5s infinite;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        /* Celebration Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .celebration-card {
+            background: white;
+            border: 4px solid;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .celebration-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.35);
+        }
+
+        .card-welcome {
+            border-color: #fbbf24;
+        }
+
+        .card-service {
+            border-color: #3b82f6;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            text-align: center;
+            color: white;
+        }
+
+        .header-welcome {
+            background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+        }
+
+        .header-service {
+            background: linear-gradient(135deg, #3b82f6 0%, #7c3aed 100%);
+        }
+
+        .card-emoji {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .welcome-content {
+            background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+        }
+
+        .service-content {
+            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+        }
+
+        /* Badge Styles */
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #10b981;
+            color: white;
+            border-radius: 9999px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .state-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .state-badge {
+            padding: 0.25rem 0.75rem;
+            border: 2px solid #3b82f6;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            background: white;
+            color: #3b82f6;
+        }
+
+        /* Order Values - Treasure Chest */
+        .treasure-card {
+            background: white;
+            border: 4px solid #10b981;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .treasure-header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .treasure-content {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            padding: 2rem;
+        }
+
+        .treasure-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .treasure-box {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 4px solid;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .treasure-tn {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            border-color: #eab308;
+        }
+
+        .treasure-other {
+            background: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 100%);
+            border-color: #3b82f6;
+        }
+
+        .treasure-emoji {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .treasure-state {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .treasure-tn .treasure-state {
+            color: #a16207;
+        }
+
+        .treasure-other .treasure-state {
+            color: #1e40af;
+        }
+
+        .treasure-amount {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .treasure-tn .treasure-amount {
+            color: #a16207;
+        }
+
+        .treasure-other .treasure-amount {
+            color: #1e40af;
+        }
+
+        .treasure-label {
+            font-weight: 500;
+        }
+
+        .treasure-tn .treasure-label {
+            color: #a16207;
+        }
+
+        .treasure-other .treasure-label {
+            color: #1e40af;
+        }
+
+        /* Process Steps - Journey Style */
+        .journey-card {
+            background: white;
+            border: 4px solid #8b5cf6;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .journey-header {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .journey-content {
+            background: linear-gradient(135deg, #f3f4f6 0%, #fce7f3 100%);
+            padding: 2rem;
+        }
+
+        .journey-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .journey-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e5e7eb;
+        }
+
+        .step-number {
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .step-emoji {
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #7c3aed;
+            margin-bottom: 0.25rem;
+        }
+
+        .step-desc {
+            color: #6b7280;
+        }
+
+        /* Important Notice - Fireworks Style */
+        .fireworks-card {
+            background: white;
+            border: 4px solid #dc2626;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        .fireworks-header {
+            background: linear-gradient(135deg, #dc2626 0%, #f97316 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .fireworks-content {
+            background: linear-gradient(135deg, #fef2f2 0%, #fed7aa 100%);
+            padding: 2rem;
+        }
+
+        .notice-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .notice-section {
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 4px solid;
+        }
+
+        .notice-email {
+            background: #fef3c7;
+            border-color: #eab308;
+        }
+
+        .notice-images {
+            background: #fed7aa;
+            border-color: #f97316;
+        }
+
+        .notice-promise {
+            background: #dcfce7;
+            border-color: #10b981;
+            text-align: center;
+        }
+
+        .notice-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .notice-emoji {
+            font-size: 2rem;
+        }
+
+        .notice-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .notice-email .notice-title {
+            color: #a16207;
+        }
+
+        .notice-images .notice-title {
+            color: #c2410c;
+        }
+
+        .notice-promise .notice-title {
+            color: #166534;
+        }
+
+        .notice-text {
+            font-size: 0.875rem;
+        }
+
+        .notice-email .notice-text {
+            color: #a16207;
+        }
+
+        .notice-images .notice-text {
+            color: #c2410c;
+        }
+
+        .notice-promise .notice-text {
+            color: #166534;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+       
+        /* Animations */
+        @keyframes bounce {
+            0%, 20%, 53%, 80%, 100% {
+                transform: translate3d(0, 0, 0);
+            }
+            40%, 43% {
+                transform: translate3d(0, -30px, 0);
+            }
+            70% {
+                transform: translate3d(0, -15px, 0);
+            }
+            90% {
+                transform: translate3d(0, -4px, 0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-title {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .treasure-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .decoration {
+                display: none;
+            }
+
+            .container {
+                padding: 1.5rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .celebration-card {
+                min-width: auto;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+     <!-- Header -->
+        <header class="header" id="header">
+            <div class="nav-container">
+                <div class="logo">
+                    <span class="logo-text">SK Cracker's</span>
+                </div>
+                
+                <nav>
+                    <ul class="nav-menu" id="navMenu">
+                        <li class="nav-item">
+                            <a href="./index.html" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="./index.html" class="nav-link">
+                                About <i class="fas fa-chevron-down dropdown-arrow"></i>
+                            </a>
+                            <div class="dropdown-content">
+                                <a href="./terms-condition.html">Terms and Conditions</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./Safety-Tips.html" class="nav-link">Safety Tips</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./order-status.html" class="nav-link">Order Status</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./contect.html" class="nav-link">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./order.html" class="order-btn">Order Now</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <button class="mobile-menu-toggle" id="mobileToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </header>
+        
+    <!-- Animated Header -->
+    <div class="hero-header">
+        <div class="hero-content">
+            <div class="hero-title">
+                <span class="sparkle">✨</span>
+                <h1 class="main-title"> Terms & Conditions </h1>
+                <span class="sparkle">✨</span>
+            </div>
+            <p class="hero-description">
+                🎉 Making your celebrations brighter with quality crackers! 🎉
+            </p>
+        </div>
+        <!-- Decorative elements -->
+        <div class="decoration decoration-1">✨</div>
+        <div class="decoration decoration-2">🎊</div>
+        <div class="decoration decoration-3">🎆</div>
+        <div class="decoration decoration-4">🎇</div>
+    </div>
+
+    <div class="container">
+        <!-- Celebration Cards -->
+        <div class="cards-grid">
+            <!-- Welcome Card -->
+            <div class="celebration-card card-welcome">
+                <div class="card-header header-welcome">
+                    <div class="card-emoji">🎊</div>
+                    <h2 class="card-title">Welcome to Our Festival!</h2>
+                </div>
+                <div class="card-content welcome-content">
+                    <div style="text-align: center; color: #1f2937;">
+                        <p style="font-weight: 600; font-size: 1.125rem; margin-bottom: 1rem;">🎯 Personal Use Only</p>
+                        <p style="margin-bottom: 1rem;">By ordering, you agree to celebrate responsibly!</p>
+                        <div style="background: #fde047; padding: 1rem; border-radius: 0.5rem; border: 2px solid #eab308;">
+                            <p style="color: #a16207; font-weight: 500; text-align: center;">
+                                ⚠️ Terms may change without notice - Stay updated for the best experience!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service Areas -->
+            <div class="celebration-card card-service">
+                <div class="card-header header-service">
+                    <div class="card-emoji">🗺️</div>
+                    <h2 class="card-title">Our Service Kingdom</h2>
+                </div>
+                <div class="card-content service-content">
+                    <div style="text-align: center; color: #1f2937;">
+                        <div class="badge">🇮🇳 All India Service</div>
+                        <p style="font-weight: 600; margin-bottom: 1rem;">🌟 Special Service States:</p>
+                        <div class="state-badges">
+                            <span class="state-badge">🥥 Kerala</span>
+                            <span class="state-badge">☕ Karnataka</span>
+                            <span class="state-badge">🌶️ Andhra Pradesh</span>
+                            <span class="state-badge">💎 Telangana</span>
+                            <span class="state-badge">🏛️ Tamil Nadu</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Values - Treasure Chest Style -->
+        <div class="treasure-card">
+            <div class="treasure-header">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">💰</div>
+                <h2 style="font-size: 2rem; font-weight: bold;">Treasure Chest - Minimum Orders</h2>
+            </div>
+            <div class="treasure-content">
+                <div class="treasure-grid">
+                    <div class="treasure-box treasure-tn">
+                        <div class="treasure-emoji">🏛️</div>
+                        <h3 class="treasure-state">Tamil Nadu</h3>
+                        <p class="treasure-amount">₹3,000</p>
+                        <p class="treasure-label">Minimum Order</p>
+                    </div>
+                    <div class="treasure-box treasure-other">
+                        <div class="treasure-emoji">🌍</div>
+                        <h3 class="treasure-state">Other States</h3>
+                        <p class="treasure-amount">₹5,000</p>
+                        <p class="treasure-label">Minimum Order</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Process Steps - Journey Style -->
+        <div class="journey-card">
+            <div class="journey-header">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">🛤️</div>
+                <h2 style="font-size: 2rem; font-weight: bold;">Your Celebration Journey</h2>
+            </div>
+            <div class="journey-content">
+                <div class="journey-steps">
+                    <div class="journey-step">
+                        <div class="step-number">1</div>
+                        <div class="step-emoji">🛒</div>
+                        <div class="step-content">
+                            <h4 class="step-title">Add to Wishlist</h4>
+                            <p class="step-desc">Choose your favorite crackers</p>
+                        </div>
+                    </div>
+                    <div class="journey-step">
+                        <div class="step-number">2</div>
+                        <div class="step-emoji">📝</div>
+                        <div class="step-content">
+                            <h4 class="step-title">Quick Enquiry</h4>
+                            <p class="step-desc">Submit your order details</p>
+                        </div>
+                    </div>
+                    <div class="journey-step">
+                        <div class="step-number">3</div>
+                        <div class="step-emoji">📞</div>
+                        <div class="step-content">
+                            <h4 class="step-title">We Call You</h4>
+                            <p class="step-desc">Within 24 hours guaranteed!</p>
+                        </div>
+                    </div>
+                    <div class="journey-step">
+                        <div class="step-number">4</div>
+                        <div class="step-emoji">💳</div>
+                        <div class="step-content">
+                            <h4 class="step-title">Payment</h4>
+                            <p class="step-desc">Full payment before dispatch</p>
+                        </div>
+                    </div>
+                    <div class="journey-step">
+                        <div class="step-number">5</div>
+                        <div class="step-emoji">🚚</div>
+                        <div class="step-content">
+                            <h4 class="step-title">Delivery</h4>
+                            <p class="step-desc">Safe delivery to your doorstep</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Important Notice - Fireworks Style -->
+        <div class="fireworks-card">
+            <div class="fireworks-header">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">🎆</div>
+                <h2 style="font-size: 2rem; font-weight: bold;">Important Celebration Notes</h2>
+            </div>
+            <div class="fireworks-content">
+                <div class="notice-sections">
+                    <div class="notice-section notice-email">
+                        <div class="notice-header">
+                            <span class="notice-emoji">📧</span>
+                            <h4 class="notice-title">Email Reference Only</h4>
+                        </div>
+                        <p class="notice-text">
+                            <strong>'rudracrackerssivakasi@gmail.com'</strong> - Just for checking availability & prices!
+                        </p>
+                    </div>
+
+                    <div class="notice-section notice-images">
+                        <div class="notice-header">
+                            <span class="notice-emoji">📸</span>
+                            <h4 class="notice-title">Product Images</h4>
+                        </div>
+                        <p class="notice-text">
+                            Images are for reference only - actual products may vary in appearance!
+                        </p>
+                    </div>
+
+                    <div class="notice-section notice-promise">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🎯</div>
+                        <p class="notice-text">Our Promise: 24-Hour Response Guarantee! 🕐</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+    </div>
+
+    <!-- Footer -->
+        <footer class="footer" id="footer">
+            <div class="footer-container">
+                <div class="footer-content">
+                    <!-- About Us Section -->
+                    <div class="footer-section">
+                        <h3>About Us</h3>
+                        <p class="footer-description">
+                            SK Crackers is one of the leading crackers dealer in Sivakasi. Since 2015 we have the good relationship with our valuable customers. Here you can get all kinds of crackers with affordable prices.
+                        </p>
+                        <div class="social-links">
+                            <a href="#" class="social-link" aria-label="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="social-link" aria-label="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="social-link" aria-label="YouTube">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                            <a href="#" class="social-link" aria-label="WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Useful Links Section -->
+                    <div class="footer-section">
+                        <h3>Useful Links</h3>
+                        <ul class="footer-links">
+                            <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                            <li><a href="#safety"><i class="fas fa-chevron-right"></i> Safety Tips</a></li>
+                            <li><a href="#terms"><i class="fas fa-chevron-right"></i> Terms & Conditions</a></li>
+                            <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                            <li><a href="#enquiry"><i class="fas fa-chevron-right"></i> Quick Enquiry</a></li>
+                            <li><a href="#order"><i class="fas fa-chevron-right"></i> Order Track</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Us Section -->
+                    <div class="footer-section">
+                        <h3>Contact Us</h3>
+                        <ul class="contact-info">
+                            <li>
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <strong>All Days:</strong><br>
+                                    9:00 A.M - 11:00 P.M
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-phone"></i>
+                                <div>
+                                    +91 9876543210<br>
+                                    +91 8765432109
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-envelope"></i>
+                                <div>skcrackerssivakasi@gmail.com</div>
+                            </li>
+                            <li>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div>
+                                    S.NO.123/45 AND 2/567-L, 2/567-K,<br>
+                                    SIVAKASI NAGAR, SIVAKASI MAIN ROAD,<br>
+                                    SIVAKASI, SATTUR, VIRUDHUNAGAR,<br>
+                                    TAMILNADU, 626203.
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Reach Us Section -->
+                    <div class="footer-section">
+                        <h3>Reach Us</h3>
+                        <div class="map-container">
+                            <div class="map-placeholder">
+                                <i class="fas fa-map-marked-alt"></i>
+                                <span style="margin-left: 10px;">SK Crackers Location</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <div class="footer-disclaimer">
+                        As per 2018 supreme court order, online sale of firecrackers are not permitted! We value our customers and at the same time, respect jurisdiction. We request you to add your products to the cart and submit the required crackers through the enquiry button. We will contact you within 24 hrs and confirm the order through WhatsApp or phone call. Please add and submit your enquiries and enjoy your Diwali with SK Crackers. Our License No. -----. SK Crackers as a company following 100% legal & statutory compliances and all our shops, go-downs are maintained as per the explosive acts. We send the parcels through registered and legal transport service providers as like every other major companies in Sivakasi is doing so.
+                    </div>
+                    <div class="footer-copyright">
+                        © 2024 <strong>SK Crackers</strong>. All Rights Reserved. | Designed with ❤️ for Celebrations
+                    </div>
+                </div>
+            </div>
+        </footer>
+<script src="./JS/script.js"></script>
+    <script>
+        // Complete Navigation and Page Functionality
+window.addEventListener('load', function() {
+    // Preloader
+    setTimeout(function() {
+        const preloader = document.getElementById('preloader');
+        const mainContent = document.getElementById('mainContent');
+        
+        if (preloader && mainContent) {
+            preloader.classList.add('fade-out');
+            mainContent.style.display = 'block';
+            
+            setTimeout(function() {
+                preloader.style.display = 'none';
+            }, 500);
+        }
+    }, 1000);
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Mobile menu toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navMenu = document.getElementById('navMenu');
+    
+    if (mobileToggle && navMenu) {
+        mobileToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            const icon = mobileToggle.querySelector('i');
+            if (icon) {
+                if (navMenu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            }
+        });
+    }
+
+    // FIXED: Navigation Links Handler
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            
+            // Only prevent default for dropdown toggles (#) and empty links
+            if (href === '#' || !href) {
+                e.preventDefault();
+                return;
+            }
+            
+            // Handle hash links (smooth scroll)
+            if (href.startsWith('#') && href.length > 1) {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+            
+            // For all other links (.html files), let browser handle normally
+            // Don't prevent default - this allows navigation to work
+            
+            // Close mobile menu after click
+            if (navMenu && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                const icon = mobileToggle?.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            }
+        });
+    });
+
+    // Dropdown functionality
+    document.querySelectorAll('.dropdown').forEach(dropdown => {
+        const dropdownContent = dropdown.querySelector('.dropdown-content');
+        
+        if (dropdownContent) {
+            dropdown.addEventListener('mouseenter', function() {
+                dropdownContent.style.opacity = '1';
+                dropdownContent.style.visibility = 'visible';
+                dropdownContent.style.transform = 'translateY(0)';
+            });
+            
+            dropdown.addEventListener('mouseleave', function() {
+                dropdownContent.style.opacity = '0';
+                dropdownContent.style.visibility = 'hidden';
+                dropdownContent.style.transform = 'translateY(-10px)';
+            });
+        }
+    });
+
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+        const header = document.getElementById('header');
+        if (header) {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        }
+    });
+
+    // Intersection Observer for animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Observe benefit items
+    document.querySelectorAll('.benefit-item').forEach(item => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(30px)';
+        item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(item);
+    });
+});
+        
+    </script>
+</body>
+</html>
