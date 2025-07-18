@@ -108,7 +108,54 @@
             background: rgba(255, 215, 0, 0.1);
             color: #ffd700;
         }
-        
+        .dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    min-width: 200px;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.dropdown:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 0.8rem 1rem;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.dropdown-content a:last-child {
+    border-bottom: none;
+}
+
+.dropdown-content a:hover {
+    background: rgba(255, 215, 0, 0.1);
+    color: #ffd700;
+}
+
+.dropdown-arrow {
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+.dropdown:hover .dropdown-arrow {
+    transform: rotate(180deg);
+}        
         /* Main Content */
         .main-content {
             margin-top: 70px;
@@ -475,38 +522,45 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="header" id="header">
-        <div class="nav-container">
-            <div class="logo">
-                <span class="logo-text">SK Cracker's</span>
+   <header class="header" id="header">
+            <div class="nav-container">
+                <div class="logo">
+                    <span class="logo-text">SK Cracker's</span>
+                </div>
+                
+                <nav>
+                    <ul class="nav-menu" id="navMenu">
+                        <li class="nav-item">
+                            <a href="./index.html" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="./index.html" class="nav-link">
+                                About <i class="fas fa-chevron-down dropdown-arrow"></i>
+                            </a>
+                            <div class="dropdown-content">
+                                <a href="./terms-condition.html">Terms and Conditions</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./Safety-Tips.html" class="nav-link">Safety Tips</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./order-status.html" class="nav-link">Order Status</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./contect.html" class="nav-link">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./order.html" class="order-btn">Order Now</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <button class="mobile-menu-toggle" id="mobileToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
-            <nav>
-                <ul class="nav-menu" id="navMenu">
-                    <li class="nav-item">
-                        <a href="#home" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#about" class="nav-link">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="./Safety-Tips.html" class="nav-link">Safety Tips</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="./order-status.html" class="nav-link">Order Status</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="./contect.html" class="nav-link">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="./order.html" class="order-btn">Order Now</a>
-                    </li>
-                </ul>
-            </nav>
-            <button class="mobile-menu-toggle" id="mobileToggle">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-    </header>
+        </header>
 
     <!-- Main Content -->
     <main class="main-content">
