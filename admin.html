@@ -1039,7 +1039,7 @@
         errorMessage.style.display = 'none';
         ordersTable.style.display = 'none';
         noOrdersMessage.style.display = 'none';
-                    fetch("http://localhost:8081/api/orders")
+                    fetch("https://sk-crackers-backend-1.onrender.com/api/orders")
             .then(res => {
                 if (!res.ok) {
                     throw new Error(`HTTP error! status: ${res.status}`);
@@ -1201,7 +1201,7 @@
             alert('Please select a status');
             return;
         }
-        fetch(`http://localhost:8081/api/orders/${currentOrderId}/status`, {
+        fetch(`https://sk-crackers-backend-1.onrender.com/api/orders/${currentOrderId}/status`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

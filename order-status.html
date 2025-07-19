@@ -711,7 +711,7 @@
 
         // Search customer in database via API
         function searchCustomer(name, mobile) {
-    return fetch(`http://localhost:8081/api/orders/search?mobile=${mobile}`)
+    return fetch(`https://sk-crackers-backend-1.onrender.com/api/orders/search?mobile=${mobile} `)
         .then(res => res.json())
         .then(orders => {
             // Find ALL orders that match both name and mobile
