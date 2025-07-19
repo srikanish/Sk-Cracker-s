@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard - SK Crackers</title>
+<link rel="icon" href="./assets/logo-transparent.png">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+    }
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    .header {
+        background: linear-gradient(45deg, #ff6b35, #f59e0b);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+    .header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+    .header p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+    .controls {
+        padding: 30px;
+        background: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .search-container {
+        flex: 1;
+        min-width: 300px;
+        position: relative;
+    }
+    .search-input {
+        width: 100%;
+        padding: 15px 50px 15px 20px;
+        font-size: 1.1rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        background: white;
+    }
+    .search-input:focus {
+        outline: none;
+        border-color: #ff6b35;
+        box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+    }
+    .search-icon {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+        font-size: 1.2rem;
+    }
+    .stats {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+    .stat-item {
+        background: white;
+        padding: 15px 25px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #ff6b35;
+    }
+    .stat-number {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #1e293b;
+    }
+    .stat-label {
+        font-size: 0.9rem;
+        color: #64748b;
+        margin-top: 5px;
+    }
+    .refresh-btn, .add-product-btn {
+        background: linear-gradient(45deg, #10b981, #059669);
+        color: white;
+        border: none;
+        padding: 15px 25px;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .refresh-btn:hover, .add-product-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+    }
+    .table-container {
+        padding: 30px;
+        overflow-x: auto;
+    }
+    .orders-table, .products-admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+    .orders-table th, .products-admin-table th {
+        background: linear-gradient(45deg, #1e293b, #334155);
+        color: white;
+        padding: 20px 15px;
+        text-align: left;
+        font-weight: bold;
+        font-size: 1rem;
+    }
+    .orders-table td, .products-admin-table td {
+        padding: 18px 15px;
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: top;
+    }
+    .orders-table tr:hover, .products-admin-table tr:hover {
+        background-color: #f8fafc;
+    }
+    .orders-table tr:last-child td, .products-admin-table tr:last-child td {
+        border-bottom: none;
+    }
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .status-pending {
+        background: #fef3c7;
+        color: #92400e;
+    }
+    .status-confirmed {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+    .status-shipped {
+        background: #e0e7ff;
+        color: #5b21b6;
+    }
+    .status-dispatched {
+        background: #f3e8ff;
+        color: #7c2d12;
+    }
+    .status-delivered {
+        background: #d1fae5;
+        color: #065f46;
+    }
+    .status-cancelled {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+    .amount {
+        font-weight: bold;
+        color: #059669;
+        font-size: 1.1rem;
+    }
+    .products-list {
+        max-width: 250px;
+        word-wrap: break-word;
+        line-height: 1.4;
+    }
+    .product-item {
+        background: #f1f5f9;
+        padding: 4px 8px;
+        margin: 2px 0;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        display: inline-block;
+        margin-right: 5px;
+    }
+    .no-orders, .no-products-admin {
+        text-align: center;
+        padding: 60px 20px;
+        color: #64748b;
+    }
+    .no-orders i, .no-products-admin i {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        color: #cbd5e1;
+    }
+    .no-orders h3, .no-products-admin h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+    .loading {
+        text-align: center;
+        padding: 60px 20px;
+        color: #64748b;
+    }
+    .loading i {
+        font-size: 3rem;
+        animation: spin 1s linear infinite;
+        color: #ff6b35;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .error-message {
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 15px 20px;
+        margin: 20px 30px;
+        border-radius: 8px;
+        border-left: 4px solid #dc2626;
+    }
+    /* Status Update Modal */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+    }
+    .modal-content {
+        background-color: white;
+        margin: 15% auto; /* Default margin for modals */
+        padding: 30px;
+        border-radius: 15px;
+        width: 400px;
+        max-width: 90%;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    .modal-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .modal-header h3 {
+        color: #1e293b;
+        font-size: 1.5rem;
+    }
+    .status-options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .status-option {
+        padding: 12px 15px;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        font-weight: bold;
+    }
+    .status-option:hover {
+        border-color: #ff6b35;
+        background: #fef3c7;
+    }
+    .status-option.selected {
+        border-color: #ff6b35;
+        background: #ff6b35;
+        color: white;
+    }
+    .modal-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+    .modal-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .update-btn {
+        background: #10b981;
+        color: white;
+    }
+    .cancel-btn {
+        background: #6b7280;
+        color: white;
+    }
+    .modal-btn:hover {
+        transform: translateY(-2px);
+    }
+    /* Product View Modal */
+    .product-modal {
+        display: none;
+        position: fixed;
+        z-index: 1001;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.6);
+    }
+    .product-modal-content {
+        background-color: white;
+        margin: 5% auto;
+        padding: 0;
+        border-radius: 15px;
+        width: 80%;
+        max-width: 800px;
+        max-height: 80vh;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        overflow: hidden;
+    }
+    .product-modal-header {
+        background: linear-gradient(45deg, #ff6b35, #f59e0b);
+        color: white;
+        padding: 20px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .product-modal-header h3 {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+    .close-product-modal {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+    .close-product-modal:hover {
+        background: rgba(255,255,255,0.2);
+    }
+    .product-modal-body {
+        padding: 30px;
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+    .product-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .product-table th {
+        background: linear-gradient(45deg, #1e293b, #334155);
+        color: white;
+        padding: 15px 12px;
+        text-align: left;
+        font-weight: bold;
+        font-size: 0.95rem;
+    }
+    .product-table td {
+        padding: 12px;
+        border-bottom: 1px solid #e5e7eb;
+        vertical-align: middle;
+    }
+    .product-table tr:nth-child(even) {
+        background-color: #f8fafc;
+    }
+    .product-table tr:hover {
+        background-color: #e0f2fe;
+    }
+    .product-name {
+        font-weight: 600;
+        color: #1e293b;
+    }
+    .product-quantity {
+        background: #dbeafe;
+        color: #1e40af;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        text-align: center;
+        min-width: 40px;
+        display: inline-block;
+    }
+    .no-products {
+        text-align: center;
+        padding: 40px 20px;
+        color: #64748b;
+    }
+    .no-products i {
+        font-size: 3rem;
+        margin-bottom: 15px;
+        color: #cbd5e1;
+    }
+    .export-btn {
+        background: linear-gradient(45deg, #10b981, #059669);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 15px;
+    }
+    .export-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+    }
+    .view-products-btn, .edit-product-btn {
+        background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 5px; /* Added for spacing if multiple buttons */
+    }
+    .view-products-btn:hover, .edit-product-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+    /* Add Product Modal */
+    #addProductModal .modal-content, #editProductModal .modal-content {
+        width: 500px;
+    }
+    /* New rule to move edit product modal higher */
+    #editProductModal .modal-content {
+        margin: 5% auto; /* Adjust this value as needed, e.g., 5% for higher */
+    }
+    /* New rule to center add product modal */
+    #addProductModal .modal-content {
+        margin: 0; /* Remove default margin */
+        position: absolute; /* Position relative to the fixed parent (.modal) */
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Center horizontally and vertically */
+    }
+    #addProductModal .form-group, #editProductModal .form-group {
+        margin-bottom: 15px;
+    }
+    #addProductModal label, #editProductModal label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+    #addProductModal input[type="text"],
+    #addProductModal input[type="number"],
+    #addProductModal select,
+    #editProductModal input[type="text"],
+    #editProductModal input[type="number"],
+    #editProductModal select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+    #addProductModal .modal-actions, #editProductModal .modal-actions {
+        margin-top: 20px;
+    }
+    /* Sold Out Toggle */
+    .sold-out-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        width: 60px;
+        height: 30px;
+        background-color: #ccc;
+        border-radius: 15px;
+        position: relative;
+        transition: background-color 0.3s;
+    }
+    .sold-out-toggle.active {
+        background-color: #10b981; /* Green for In Stock */
+    }
+    .sold-out-toggle::before {
+        content: '';
+        position: absolute;
+        left: 3px;
+        width: 24px;
+        height: 24px;
+        background-color: white;
+        border-radius: 50%;
+        transition: transform 0.3s;
+    }
+    .sold-out-toggle.active::before {
+        transform: translateX(30px);
+    }
+    .sold-out-text-admin {
+        font-size: 0.85rem;
+        font-weight: bold;
+        margin-left: 10px;
+        color: #666;
+    }
+    .sold-out-text-admin.active {
+        color: #10b981;
+    }
+    .sold-out-text-admin.inactive {
+        color: #ff4757;
+    }
+    /* Toggle in modal */
+    #editProductModal .sold-out-container {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+    #editProductModal .sold-out-container label {
+        margin-bottom: 0;
+        margin-right: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .product-modal-content {
+            width: 95%;
+            margin: 10% auto;
+        }
+        .product-modal-body {
+            padding: 20px;
+        }
+        .product-table th,
+        .product-table td {
+            padding: 8px 6px;
+            font-size: 0.85rem;
+        }
+    }
+    @media (max-width: 768px) {
+        .container {
+            margin: 10px;
+            border-radius: 10px;
+        }
+        .header {
+            padding: 20px;
+        }
+        .header h1 {
+            font-size: 2rem;
+        }
+        .controls {
+            padding: 20px;
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .search-container {
+            min-width: auto;
+        }
+        .stats {
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .table-container {
+            padding: 20px;
+        }
+        .orders-table, .products-admin-table {
+            font-size: 0.9rem;
+        }
+        .orders-table th, .orders-table td,
+        .products-admin-table th, .products-admin-table td {
+            padding: 12px 8px;
+        }
+        .products-list {
+            max-width: 150px;
+        }
+        #addProductModal .modal-content, #editProductModal .modal-content {
+            width: 95%;
+        }
+    }
+    @media (max-width: 480px) {
+        .header h1 {
+            font-size: 1.8rem;
+        }
+        .stat-item {
+            padding: 10px 15px;
+        }
+        .stat-number {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-fire"></i> SK Crackers</h1>
+        <p>Admin Dashboard - Order Management</p>
+    </div>
+            <div class="controls">
+        <div class="search-container">
+            <input
+                type="text"
+                id="searchInput"
+                class="search-input"
+                placeholder="Search by mobile number, name, or address..."
+                oninput="filterOrders()"
+            />
+            <i class="fas fa-search search-icon"></i>
+        </div>
+                    <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalOrders">0</div>
+                <div class="stat-label">Total Orders</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="totalRevenue">₹0</div>
+                <div class="stat-label">Total Revenue</div>
+            </div>
+        </div>
+                    <button class="refresh-btn" onclick="fetchOrders()">
+            <i class="fas fa-sync-alt"></i>
+            Refresh Orders
+        </button>
+    </div>
+            <div class="table-container">
+        <div id="loadingMessage" class="loading">
+            <i class="fas fa-spinner"></i>
+            <p>Loading orders...</p>
+        </div>
+                    <div id="errorMessage" class="error-message" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="errorText"></span>
+        </div>
+                    <table class="orders-table" id="ordersTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-hashtag"></i> ID</th>
+                    <th><i class="fas fa-user"></i> Customer Name</th>
+                    <th><i class="fas fa-phone"></i> Mobile</th>
+                    <th><i class="fas fa-map-marker-alt"></i> Address</th>
+                    <th><i class="fas fa-shopping-cart"></i> Products</th>
+                    <th><i class="fas fa-rupee-sign"></i> Amount</th>
+                    <th><i class="fas fa-calendar"></i> Date & Time</th>
+                    <th><i class="fas fa-info-circle"></i> Status</th>
+                </tr>
+            </thead>
+            <tbody id="ordersBody">
+                <!-- Orders will be populated here -->
+            </tbody>
+        </table>
+                    <div id="noOrdersMessage" class="no-orders" style="display: none;">
+            <i class="fas fa-inbox"></i>
+            <h3>No Orders Found</h3>
+            <p>No orders match your search criteria or no orders have been placed yet.</p>
+        </div>
+    </div>
+    <!-- Product Management Section -->
+    <div class="header" style="background: linear-gradient(45deg, #3b82f6, #1d4ed8); margin-top: 30px; border-radius: 15px 15px 0 0;">
+        <h1><i class="fas fa-box-open"></i> Product Inventory</h1>
+        <p>Manage your products and their availability</p>
+    </div>
+    <div class="controls" style="border-radius: 0 0 15px 15px;">
+        <button class="add-product-btn" onclick="openAddProductModal()">
+            <i class="fas fa-plus-circle"></i>
+            Add New Product
+        </button>
+        <div class="search-container" style="flex: none; width: auto;">
+            <input
+                type="text"
+                id="productSearchInput"
+                class="search-input"
+                placeholder="Search products..."
+                oninput="filterProductsAdmin()"
+            />
+            <i class="fas fa-search search-icon"></i>
+        </div>
+    </div>
+    <div class="table-container">
+        <table class="products-admin-table" id="productsAdminTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Subcategory</th>
+                    <th>MRP (₹)</th>
+                    <th>Our Price (₹)</th>
+                    <th>Sold Out</th>
+                    <th>Actions</th> <!-- New column for actions -->
+                </tr>
+            </thead>
+            <tbody id="productsAdminBody">
+                <!-- Products will be populated here -->
+            </tbody>
+        </table>
+        <div id="noProductsAdminMessage" class="no-products-admin" style="display: none;">
+            <i class="fas fa-box-open"></i>
+            <h3>No Products Found</h3>
+            <p>No products match your search criteria or no products have been added yet.</p>
+        </div>
+    </div>
+</div>
+<!-- Status Update Modal -->
+<div id="statusModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Update Order Status</h3>
+            <p>Order ID: <span id="modalOrderId"></span></p>
+        </div>
+        <div class="status-options">
+            <div class="status-option" data-status="Pending Payment">Pending Payment</div>
+            <div class="status-option" data-status="Confirmed">Confirmed</div>
+            <div class="status-option" data-status="Shipped">Shipped</div>
+            <div class="status-option" data-status="Dispatched">Dispatched</div>
+            <div class="status-option" data-status="Delivered">Delivered</div>
+            <div class="status-option" data-status="Cancelled">Cancelled</div>
+        </div>
+        <div class="modal-actions">
+            <button class="modal-btn update-btn" onclick="updateOrderStatus()">Update</button>
+            <button class="modal-btn cancel-btn" onclick="closeStatusModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+<!-- Product View Modal (for orders) -->
+<div id="productModal" class="product-modal">
+    <div class="product-modal-content">
+        <div class="product-modal-header">
+            <div>
+                <h3>Product Details</h3>
+                <p style="margin: 5px 0 0 0; opacity: 0.9;">
+                    Order #<span id="productModalOrderId"></span> - <span id="productModalCustomer"></span>
+                </p>
+            </div>
+            <button class="close-product-modal" onclick="closeProductModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="product-modal-body">
+            <table class="product-table" id="productTable">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">S.No</th>
+                        <th>Product Name</th>
+                        <th style="width: 120px;">Quantity</th>
+                    </tr>
+                </thead>
+                <tbody id="productTableBody">
+                    <!-- Products will be populated here -->
+                </tbody>
+            </table>
+                            <div id="noProductsMessage" class="no-products" style="display: none;">
+                <i class="fas fa-box-open"></i>
+                <h4>No Products Found</h4>
+                <p>This order doesn't have any products listed.</p>
+            </div>
+                            <button class="export-btn" onclick="exportToExcel()">
+                <i class="fas fa-file-excel"></i>
+                Export to Excel
+            </button>
+        </div>
+    </div>
+</div>
+<!-- Add Product Modal -->
+<div id="addProductModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Add New Product</h3>
+        </div>
+        <div class="form-group">
+            <label for="newProductName">Product Name</label>
+            <input type="text" id="newProductName" required>
+        </div>
+        <div class="form-group">
+            <label for="newProductImage">Image URL (e.g., ./img/example.jpg or /placeholder.svg)</label>
+            <input type="text" id="newProductImage" value="/placeholder.svg?height=200&width=280">
+        </div>
+        <div class="form-group">
+            <label for="newOriginalPrice">Original Price (₹)</label>
+            <input type="number" id="newOriginalPrice" min="0" value="0" required>
+        </div>
+        <div class="form-group">
+            <label for="newCurrentPrice">Our Price (₹)</label>
+            <input type="number" id="newCurrentPrice" min="0" value="0" required>
+        </div>
+        <div class="form-group">
+            <label for="newProductCategory">Category</label>
+            <select id="newProductCategory" required>
+                <option value="bombs">Bombs</option>
+                <option value="fountains">Fountains</option>
+                <option value="rockets">Rockets</option>
+                <option value="novelties">Novelties</option>
+                <option value="sparklers">Sparklers</option>
+                <option value="gift-boxes">Gift Boxes</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="newProductSubcategory">Subcategory</label>
+            <input type="text" id="newProductSubcategory" required>
+        </div>
+        <div class="modal-actions">
+            <button class="modal-btn update-btn" onclick="addNewProduct()">Add Product</button>
+            <button class="modal-btn cancel-btn" onclick="closeAddProductModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Product Modal (New) -->
+<div id="editProductModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Edit Product</h3>
+            <p>Product ID: <span id="editProductId"></span></p>
+        </div>
+        <div class="form-group">
+            <label for="editProductName">Product Name</label>
+            <input type="text" id="editProductName" required>
+        </div>
+        <div class="form-group">
+            <label for="editProductImage">Image URL (e.g., ./img/example.jpg or /placeholder.svg)</label>
+            <input type="text" id="editProductImage" required>
+        </div>
+        <div class="form-group">
+            <label for="editOriginalPrice">Original Price (₹)</label>
+            <input type="number" id="editOriginalPrice" min="0" required>
+        </div>
+        <div class="form-group">
+            <label for="editCurrentPrice">Our Price (₹)</label>
+            <input type="number" id="editCurrentPrice" min="0" required>
+        </div>
+        <div class="form-group">
+            <label for="editProductCategory">Category</label>
+            <select id="editProductCategory" required>
+                <option value="bombs">Bombs</option>
+                <option value="fountains">Fountains</option>
+                <option value="rockets">Rockets</option>
+                <option value="novelties">Novelties</option>
+                <option value="sparklers">Sparklers</option>
+                <option value="gift-boxes">Gift Boxes</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="editProductSubcategory">Subcategory</label>
+            <input type="text" id="editProductSubcategory" required>
+        </div>
+        <div class="form-group sold-out-container">
+            <label>Availability:</label>
+            <div class="sold-out-toggle" id="editSoldOutToggle" onclick="toggleEditSoldOut()"></div>
+            <span class="sold-out-text-admin" id="editSoldOutText">In Stock</span>
+        </div>
+        <div class="modal-actions">
+            <button class="modal-btn update-btn" onclick="updateProduct()">Save Changes</button>
+            <button class="modal-btn cancel-btn" onclick="closeEditProductModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let allOrders = [];
+    let filteredOrders = [];
+    let currentOrderId = null;
+    let selectedStatus = null;
+    let products = []; // Product data for admin panel
+    let currentEditingProductId = null; // New: To keep track of the product being edited
+
+    // Default product data (same as order.html, used if no data in localStorage)
+    const defaultProducts = [
+        // ONE SOUND CRACKERS
+        { id: 1, name: '2 3/4" Kuruvi', image: "./img/kuruvi1.jpg", originalPrice: 30, currentPrice: 24, category: "bombs", subcategory: "ONE SOUND CRACKERS", isSoldOut: false },
+        { id: 2, name: '3 1/2" Redbull / Chotta bheem', image: "./img/chotta_beema.jpg", originalPrice: 60, currentPrice: 48, category: "bombs", subcategory: "ONE SOUND CRACKERS", isSoldOut: false },
+        { id: 3, name: '5" Vikram/Tiger/Jallikattu', image: "./img/jallikattu.jpg", originalPrice: 200, currentPrice: 160, category: "bombs", subcategory: "ONE SOUND CRACKERS", isSoldOut: false },
+        // TWO SOUND CRACKERS
+        { id: 4, name: "2 Sound", image: "./img/2sound.jpg", originalPrice: 145, currentPrice: 116, category: "bombs", subcategory: "TWO SOUND CRACKERS", isSoldOut: false },
+        // BIJILI
+        { id: 5, name: "Red Bijili (100 Pcs)", image: "./img/redbijili.webp", originalPrice: 135, currentPrice: 108, category: "bombs", subcategory: "BIJILI", isSoldOut: false },
+        // BOMBS (NAACHIAR/SRI VIJAI/RAMCO)
+        { id: 6, name: "Bullet Bomb", image: "./img/bulletbomb.jpeg", originalPrice: 145, currentPrice: 116, category: "bombs", subcategory: "BOMBS (NAACHIAR/SRI VIJAI/RAMCO)", isSoldOut: false },
+        { id: 7, name: "Hydro Bomb", image: "./img/hyderbomb.webp", originalPrice: 325, currentPrice: 260, category: "bombs", subcategory: "BOMBS (NAACHIAR/SRI VIJAI/RAMCO)", isSoldOut: false },
+        { id: 8, name: "King of King Bomb", image: "./img/kingofking.webp", originalPrice: 395, currentPrice: 316, category: "bombs", subcategory: "BOMBS (NAACHIAR/SRI VIJAI/RAMCO)", isSoldOut: false },
+        { id: 9, name: "Mega Flash", image: "./img/megaflash.png", originalPrice: 625, currentPrice: 500, category: "bombs", subcategory: "BOMBS (NAACHIAR/SRI VIJAI/RAMCO)", isSoldOut: false },
+        { id: 10, name: "555 Bomb", image: "./img/555bomb.jpg", originalPrice: 550, currentPrice: 440, category: "bombs", subcategory: "BOMBS (NAACHIAR/SRI VIJAI/RAMCO)", isSoldOut: false },
+        // FLOWER POTS
+        { id: 11, name: "Flower Pots Small", image: "./img/flowerpotsmall.jpg", originalPrice: 275, currentPrice: 220, category: "fountains", subcategory: "FLOWER POTS", isSoldOut: false },
+        { id: 12, name: "Flower Pots Big", image: "./img/flowerpotbig.jpeg", originalPrice: 350, currentPrice: 280, category: "fountains", subcategory: "FLOWER POTS", isSoldOut: false },
+        { id: 13, name: "Flower Pots Asoka", image: "./img/flowerpotashok.webp", originalPrice: 725, currentPrice: 580, category: "fountains", subcategory: "FLOWER POTS", isSoldOut: false },
+        { id: 14, name: "Colour Koti", image: "./img/colourkoti.jpg", originalPrice: 1050, currentPrice: 840, category: "fountains", subcategory: "FLOWER POTS", isSoldOut: false },
+        // Flower pot bombs [shineshine]
+        { id: 15, name: "Ganga Jamuna", image: "./img/gangajamuna.webp", originalPrice: 575, currentPrice: 460, category: "fountains", subcategory: "Flower pot bombs [shineshine]", isSoldOut: false },
+        // Ground chakkars
+        { id: 16, name: "Ground Chakkar Big (10 Pcs)", image: "./img/groundchakarabig.webp", originalPrice: 200, currentPrice: 160, category: "fountains", subcategory: "Ground chakkars", isSoldOut: false },
+        { id: 17, name: "Ground Chakkar Deluxe", image: "./img/groundchakaradulux.jpg", originalPrice: 700, currentPrice: 560, category: "fountains", subcategory: "Ground chakkars", isSoldOut: false },
+        // Special Wheels
+        { id: 18, name: "Whistling Wheel (5 Pcs)", image: "./img/Whistlingwheel.png", originalPrice: 550, currentPrice: 440, category: "fountains", subcategory: "Special Wheels", isSoldOut: false },
+        // Wire chakkars [standard]
+        { id: 19, name: "Wire Chakkar Deluxe", image: "./img/wirechakara.jpeg", originalPrice: 1500, currentPrice: 1200, category: "fountains", subcategory: "Wire chakkars [standard]", isSoldOut: false },
+        // Twinkling Stars
+        { id: 20, name: '1 1/2" Twinkling Star', image: "./img/1twinkling-star.jpeg", originalPrice: 115, currentPrice: 92, category: "fountains", subcategory: "Twinkling Stars", isSoldOut: false },
+        { id: 21, name: '4" Twinkling Star', image: "./img/4Twinkling-star.jpg", originalPrice: 275, currentPrice: 220, category: "fountains", subcategory: "Twinkling Stars", isSoldOut: false },
+        // Pencil Torch
+        { id: 22, name: "Popcorn Pencil / Water fall pencil", image: "./img/penciltroch.png", originalPrice: 900, currentPrice: 720, category: "fountains", subcategory: "Pencil Torch", isSoldOut: false },
+        // ROCKETS
+        { id: 23, name: "Baby Rocket", image: "./img/babyrocket.png", originalPrice: 200, currentPrice: 160, category: "rockets", subcategory: "ROCKETS", isSoldOut: false },
+        { id: 24, name: "Colour Rocket", image: "./img/colorrocket.webp", originalPrice: 300, currentPrice: 240, category: "rockets", subcategory: "ROCKETS", isSoldOut: false },
+        { id: 25, name: "Lunik Rocket", image: "./img/lunkirocket.webp", originalPrice: 800, currentPrice: 640, category: "rockets", subcategory: "ROCKETS", isSoldOut: false },
+        { id: 26, name: "Two Sound Rocket", image: "./img/2soundrocket.jpg", originalPrice: 825, currentPrice: 660, category: "rockets", subcategory: "ROCKETS", isSoldOut: false },
+        { id: 27, name: "Rocket bomb", image: "./img/rocketbomb.webp", originalPrice: 300, currentPrice: 240, category: "rockets", subcategory: "ROCKETS", isSoldOut: false },
+        // CHILDREN NOVELTIES
+        { id: 28, name: "Electric Stone", image: "./img/eletricstone.webp", originalPrice: 50, currentPrice: 40, category: "novelties", subcategory: "CHILDREN NOVELTIES", isSoldOut: false },
+        { id: 29, name: "TIM TAM (Kit Kat)", image: "./img/timtim.webp", originalPrice: 350, currentPrice: 280, category: "novelties", subcategory: "CHILDREN NOVELTIES", isSoldOut: false },
+        { id: 30, name: "FIRE EGG (2 PCS)", image: "./img/fireegg.jpg", originalPrice: 775, currentPrice: 620, category: "novelties", subcategory: "CHILDREN NOVELTIES", isSoldOut: false },
+        { id: 31, name: "Selfie Stick", image: "./img/selfistick.jpg", originalPrice: 675, currentPrice: 540, category: "novelties", subcategory: "CHILDREN NOVELTIES", isSoldOut: false },
+        { id: 32, name: "SONNY Ring Cap Gun", image: "./img/sonyringcap.webp", originalPrice: 975, currentPrice: 780, category: "novelties", subcategory: "CHILDREN NOVELTIES", isSoldOut: false },
+        { id: 33, name: "Gee boom baa", image: "./img/geebumba.webp", originalPrice: 100, currentPrice: 80, category: "novelties", subcategory: "CHILDREN NOVELTIES", isSoldOut: false },
+        // COLOUR FOUNTAINS
+        { id: 34, name: "Star pots (5 Pcs)", image: "/placeholder.svg?height=200&width=280", originalPrice: 500, currentPrice: 400, category: "fountains", subcategory: "COLOUR FOUNTAINS", isSoldOut: false },
+        { id: 35, name: "Scooby Doo (5 PCS)", image: "./img/scoocyboo.jpeg", originalPrice: 875, currentPrice: 700, category: "fountains", subcategory: "COLOUR FOUNTAINS", isSoldOut: false },
+        { id: 36, name: "Peacock Feather (White)", image: "./img/peacockfeather.jpg", originalPrice: 525, currentPrice: 420, category: "fountains", subcategory: "COLOUR FOUNTAINS", isSoldOut: false },
+        { id: 37, name: "Paris Tower", image: "./img/pariestower.jpeg", originalPrice: 495, currentPrice: 396, category: "fountains", subcategory: "COLOUR FOUNTAINS", isSoldOut: false },
+        { id: 38, name: "Emoji", image: "./img/emoji.jpg", originalPrice: 725, currentPrice: 580, category: "fountains", subcategory: "COLOUR FOUNTAINS", isSoldOut: false },
+        { id: 39, name: "Siren (2 Pcs)", image: "./img/siren.webp", originalPrice: 600, currentPrice: 480, category: "fountains", subcategory: "COLOUR FOUNTAINS", isSoldOut: false },
+        { id: 40, name: "Mayajaal / GEMS", image: "./img/geems.webp", originalPrice: 700, currentPrice: 560, category: "fountains", subcategory: "COLOUR FOUNTAINS", isSoldOut: false },
+        { id: 41, name: "Mini siren (5 pcs)", image: "./img/minisiren.jpg", originalPrice: 625, currentPrice: 500, category: "fountains", subcategory: "COLOUR FOUNTAINS", isSoldOut: false },
+        { id: 42, name: "Sona Mayur Anar (2 Pcs)", image: "./img/sonamayur.jpeg", originalPrice: 750, currentPrice: 600, category: "fountains", subcategory: "COLOUR FOUNTAINS", isSoldOut: false },
+        { id: 43, name: "Wonders mix", image: "./img/wonderemix.webp", originalPrice: 800, currentPrice: 640, category: "fountains", subcategory: "COLOUR FOUNTAINS", isSoldOut: false },
+        // COLOUR FOUNTAINS (SUNSHINE BRAND)
+        { id: 44, name: "Sun Drops (5 Pcs)", image: "./img/sundrop.webp", originalPrice: 600, currentPrice: 480, category: "fountains", subcategory: "COLOUR FOUNTAINS (SUNSHINE BRAND)", isSoldOut: false },
+        { id: 45, name: "Moon Drops (5 Pcs)", image: "./img/moondrops.jpeg", originalPrice: 550, currentPrice: 440, category: "fountains", subcategory: "COLOUR FOUNTAINS (SUNSHINE BRAND)", isSoldOut: false },
+        { id: 46, name: "Star Drops (5 Pcs)", image: "./img/stardrop.webp", originalPrice: 550, currentPrice: 440, category: "fountains", subcategory: "COLOUR FOUNTAINS (SUNSHINE BRAND)", isSoldOut: false },
+        { id: 47, name: "Signora", image: "/placeholder.svg?height=200&width=280", originalPrice: 975, currentPrice: 780, category: "fountains", subcategory: "COLOUR FOUNTAINS (SUNSHINE BRAND)", isSoldOut: false },
+        // DOUBLE STEP FOUNTAINS
+        { id: 48, name: "Double decker (2 in 1)", image: "./img/dubledocker.jpg", originalPrice: 775, currentPrice: 620, category: "fountains", subcategory: "DOUBLE STEP FOUNTAINS", isSoldOut: false },
+        // TRIPLE STEP FOUNTAINS
+        { id: 49, name: "Triple monkey (3 in 1)", image: "./img/triplemonkey.webp", originalPrice: 875, currentPrice: 700, category: "fountains", subcategory: "TRIPLE STEP FOUNTAINS", isSoldOut: false },
+        // MEGA FOUNTAINS
+        { id: 50, name: "Popcorn Fountain", image: "./img/popcorn.webp", originalPrice: 725, currentPrice: 580, category: "fountains", subcategory: "MEGA FOUNTAINS", isSoldOut: false },
+        { id: 51, name: "Winter rain", image: "/placeholder.svg?height=200&width=280", originalPrice: 675, currentPrice: 540, category: "fountains", subcategory: "MEGA FOUNTAINS", isSoldOut: false },
+        { id: 52, name: "Water game", image: "/placeholder.svg?height=200&width=280", originalPrice: 775, currentPrice: 620, category: "fountains", subcategory: "MEGA FOUNTAINS", isSoldOut: false },
+        { id: 53, name: "Goli soda", image: "/placeholder.svg?height=200&width=280", originalPrice: 975, currentPrice: 780, category: "fountains", subcategory: "MEGA FOUNTAINS", isSoldOut: false },
+        // FOUNTAIN WITH SKY SHOTS
+        { id: 54, name: "Violet Matrix (1 Fountain & 2 Sky shots)", image: "./img/violetmatrix.jpg", originalPrice: 1625, currentPrice: 1300, category: "fountains", subcategory: "FOUNTAIN WITH SKY SHOTS", isSoldOut: false },
+        // PEACOCK
+        { id: 55, name: "Peacock (5 Wings)", image: "./img/peacock5wings.jpg", originalPrice: 925, currentPrice: 740, category: "fountains", subcategory: "PEACOCK", isSoldOut: false },
+        { id: 56, name: "Bada Peacock", image: "./img/badapeacock.webp", originalPrice: 2100, currentPrice: 1680, category: "fountains", subcategory: "PEACOCK", isSoldOut: false },
+        // SMOKE
+        { id: 57, name: "Rainbow Colour Smoke (3 Pcs)", image: "./img/rainbow.png", originalPrice: 775, currentPrice: 620, category: "novelties", subcategory: "SMOKE", isSoldOut: false },
+        { id: 58, name: "Colour smoke (5 pcs)", image: "./img/colorsmoke.jpg", originalPrice: 975, currentPrice: 780, category: "novelties", subcategory: "SMOKE", isSoldOut: false },
+        // NEW ARRIVALS
+        { id: 59, name: "Butterfly (10 Pcs)", image: "./img/butterfly.webp", originalPrice: 345, currentPrice: 276, category: "novelties", subcategory: "NEW ARRIVALS", isSoldOut: false },
+        { id: 60, name: "Pamparam (10 Pcs)", image: "./img/paparam.webp", originalPrice: 575, currentPrice: 460, category: "novelties", subcategory: "NEW ARRIVALS", isSoldOut: false },
+        { id: 61, name: "Helicopter (5 Pcs)", image: "./img/helicopter.jpg", originalPrice: 550, currentPrice: 440, category: "novelties", subcategory: "NEW ARRIVALS", isSoldOut: false },
+        { id: 62, name: "Look Up (5 PCS)", image: "./img/lookup.jpg", originalPrice: 900, currentPrice: 720, category: "novelties", subcategory: "NEW ARRIVALS", isSoldOut: false },
+        { id: 63, name: "Golden Lion", image: "./img/goldenlion.jpg", originalPrice: 1475, currentPrice: 1180, category: "novelties", subcategory: "NEW ARRIVALS", isSoldOut: false },
+        { id: 64, name: "Lollipop", image: "./img/lollipop.jpg", originalPrice: 1150, currentPrice: 920, category: "novelties", subcategory: "NEW ARRIVALS", isSoldOut: false },
+        { id: 65, name: "Tin Beer", image: "./img/tinbeer.jpg", originalPrice: 600, currentPrice: 480, category: "novelties", subcategory: "NEW ARRIVALS", isSoldOut: false },
+        { id: 66, name: "Poppet (Vanitha)", image: "./img/poppet.png", originalPrice: 2375, currentPrice: 1900, category: "novelties", subcategory: "NEW ARRIVALS", isSoldOut: false },
+        { id: 67, name: "5 IN 1 CRACKLING QUEEN", image: "/placeholder.svg?height=200&width=280", originalPrice: 1300, currentPrice: 1040, category: "novelties", subcategory: "NEW ARRIVALS", isSoldOut: false },
+        { id: 68, name: "Cocktail party (3 tin)", image: "/placeholder.svg?height=200&width=280", originalPrice: 1600, currentPrice: 1280, category: "novelties", subcategory: "NEW ARRIVALS", isSoldOut: false },
+        // MUD FLOWER POTS
+        { id: 69, name: "Mini Pearl", image: "./img/minipearl.jpg", originalPrice: 825, currentPrice: 660, category: "fountains", subcategory: "MUD FLOWER POTS", isSoldOut: false },
+        { id: 70, name: "Tim Tim", image: "./img/timtam.jpg", originalPrice: 875, currentPrice: 700, category: "fountains", subcategory: "MUD FLOWER POTS", isSoldOut: false },
+        // MINI AERIAL CHOTTA FANCY
+        { id: 71, name: "Juniper green ( 6 pcs)", image: "./img/jupitergreen.webp", originalPrice: 600, currentPrice: 480, category: "fountains", subcategory: "MINI AERIAL CHOTTA FANCY", isSoldOut: false },
+        { id: 72, name: "Golden ingot (6 pcs)", image: "/placeholder.svg?height=200&width=280", originalPrice: 625, currentPrice: 500, category: "fountains", subcategory: "MINI AERIAL CHOTTA FANCY", isSoldOut: false },
+        { id: 73, name: "Panch chamak (5 Pcs)", image: "/placeholder.svg?height=200&width=280", originalPrice: 675, currentPrice: 540, category: "fountains", subcategory: "MINI AERIAL CHOTTA FANCY", isSoldOut: false },
+        { id: 74, name: "7 Shot", image: "/placeholder.svg?height=200&width=280", originalPrice: 600, currentPrice: 480, category: "fountains", subcategory: "MINI AERIAL CHOTTA FANCY", isSoldOut: false },
+        { id: 75, name: "Chotta Fancy", image: "./img/choota.jpg", originalPrice: 200, currentPrice: 160, category: "fountains", subcategory: "MINI AERIAL CHOTTA FANCY", isSoldOut: false },
+        // MEGA AERIAL FANCY
+        { id: 76, name: '2" Fancy', image: "/placeholder.svg?height=200&width=280", originalPrice: 525, currentPrice: 420, category: "fountains", subcategory: "MEGA AERIAL FANCY", isSoldOut: false },
+        { id: 77, name: '3 1/2" Fancy', image: "/placeholder.svg?height=200&width=280", originalPrice: 1175, currentPrice: 940, category: "fountains", subcategory: "MEGA AERIAL FANCY", isSoldOut: false },
+        { id: 78, name: '3 1/2" Fancy - 7 Step', image: "/placeholder.svg?height=200&width=280", originalPrice: 1425, currentPrice: 1140, category: "fountains", subcategory: "MEGA AERIAL FANCY", isSoldOut: false },
+        { id: 79, name: '3 1/2" Fancy (Double Ball)', image: "/placeholder.svg?height=200&width=280", originalPrice: 1700, currentPrice: 1360, category: "fountains", subcategory: "MEGA AERIAL FANCY", isSoldOut: false },
+        { id: 80, name: '4" Fancy (2 Pcs) SRI VIJAY', image: "/placeholder.svg?height=200&width=280", originalPrice: 4275, currentPrice: 3420, category: "fountains", subcategory: "MEGA AERIAL FANCY", isSoldOut: false },
+        { id: 81, name: '4" Fancy (Double Ball)', image: "/placeholder.svg?height=200&width=280", originalPrice: 2275, currentPrice: 1820, category: "fountains", subcategory: "MEGA AERIAL FANCY", isSoldOut: false },
+        { id: 82, name: '4" Fancy WOW PINK', image: "/placeholder.svg?height=200&width=280", originalPrice: 1975, currentPrice: 1580, category: "fountains", subcategory: "MEGA AERIAL FANCY", isSoldOut: false },
+        { id: 83, name: '4" Fancy WOW BLUE', image: "/placeholder.svg?height=200&width=280", originalPrice: 1975, currentPrice: 1580, category: "fountains", subcategory: "MEGA AERIAL FANCY", isSoldOut: false },
+        { id: 84, name: '4" Fancy triple ball', image: "/placeholder.svg?height=200&width=280", originalPrice: 2300, currentPrice: 1840, category: "fountains", subcategory: "MEGA AERIAL FANCY", isSoldOut: false },
+        { id: 85, name: "Tom and jerry / Mommy & Daddy (Double ball)", image: "./img/tomjeery.jpg", originalPrice: 2325, currentPrice: 1860, category: "fountains", subcategory: "MEGA AERIAL FANCY", isSoldOut: false },
+        { id: 86, name: "Digital star", image: "./img/12shot.png", originalPrice: 1725, currentPrice: 1380, category: "fountains", subcategory: "MEGA AERIAL FANCY", isSoldOut: false },
+        // MULTICOLOUR SHOTS
+        { id: 87, name: "12 Shots crackling / Raider star", image: "./img/12shot.png", originalPrice: 1175, currentPrice: 940, category: "fountains", subcategory: "MULTICOLOUR SHOTS", isSoldOut: false },
+        { id: 88, name: "30 Shots peacock dance / MAYURA", image: "./img/30peacockdance.webp", originalPrice: 3450, currentPrice: 2760, category: "fountains", subcategory: "MULTICOLOUR SHOTS", isSoldOut: false },
+        { id: 89, name: "12 Colour balls", image: "/placeholder.svg?height=200&width=280", originalPrice: 675, currentPrice: 540, category: "fountains", subcategory: "MULTICOLOUR SHOTS", isSoldOut: false },
+        { id: 90, name: "30 Shot Multi Colour", image: "./img/30shot.jpeg", originalPrice: 1950, currentPrice: 1560, category: "fountains", subcategory: "MULTICOLOUR SHOTS", isSoldOut: false },
+        { id: 91, name: "60 Shot Multi Colour", image: "./img/60shot.jpg", originalPrice: 3900, currentPrice: 3120, category: "fountains", subcategory: "MULTICOLOUR SHOTS", isSoldOut: false },
+        { id: 92, name: "120 Shot Multi Colour", image: "./img/120shot.jpg", originalPrice: 7800, currentPrice: 6240, category: "fountains", subcategory: "MULTICOLOUR SHOTS", isSoldOut: false },
+        { id: 93, name: "240 Shot Multi Colour", image: "./img/240shot.jpg", originalPrice: 15500, currentPrice: 12400, category: "fountains", subcategory: "MULTICOLOUR SHOTS", isSoldOut: false },
+        // FAN CAKES (NEW ARRIVALS)
+        { id: 94, name: "Celebration night 10x10 shots", image: "./img/Celebrationight.jpeg", originalPrice: 16500, currentPrice: 13200, category: "fountains", subcategory: "FAN CAKES (NEW ARRIVALS)", isSoldOut: false },
+        // SPARKLERS
+        { id: 95, name: "10Cm Electric Sparklers", image: "./img/10CmElectricSparklers.jpg", originalPrice: 85, currentPrice: 68, category: "sparklers", subcategory: "SPARKLERS", isSoldOut: false },
+        { id: 96, name: "10Cm Colour Sparklers", image: "./img/10CmColourSparklers.webp", originalPrice: 95, currentPrice: 76, category: "sparklers", subcategory: "SPARKLERS", isSoldOut: false },
+        { id: 97, name: "10Cm Green Sparklers", image: "./img/10CmGreenSparklers.jpg", originalPrice: 100, currentPrice: 80, category: "sparklers", subcategory: "SPARKLERS", isSoldOut: false },
+        { id: 98, name: "10Cm Red Sparklers", image: "./img/10CmRedSparklers.jpg", originalPrice: 105, currentPrice: 84, category: "sparklers", subcategory: "SPARKLERS", isSoldOut: false },
+        { id: 99, name: "12Cm Red Sparklers", image: "./img/12CmRedSparklers.jpeg", originalPrice: 160, currentPrice: 128, category: "sparklers", subcategory: "SPARKLERS", isSoldOut: false },
+        { id: 100, name: "15Cm Electric Sparklers", image: "./img/15CmElectricSparklers.jpg", originalPrice: 180, currentPrice: 144, category: "sparklers", subcategory: "SPARKLERS", isSoldOut: false },
+        { id: 101, name: "15Cm Green Sparklers", image: "./img/15CmGreenSparklers.jpg", originalPrice: 220, currentPrice: 176, category: "sparklers", subcategory: "SPARKLERS", isSoldOut: false },
+        { id: 102, name: "15Cm Red Sparklers", image: "./img/15CmRedSparklers.jpg", originalPrice: 235, currentPrice: 188, category: "sparklers", subcategory: "SPARKLERS", isSoldOut: false },
+        { id: 103, name: "50Cm Sparklers", image: "./img/50CmSparklers.jpg", originalPrice: 875, currentPrice: 700, category: "sparklers", subcategory: "SPARKLERS", isSoldOut: false },
+        // CHILDREN'S COLOUR MATCH BOX (NET RATE)
+        { id: 104, name: "Mega", image: "/placeholder.svg?height=200&width=280", originalPrice: 2450, currentPrice: 2450, category: "gift-boxes", subcategory: "CHILDREN'S COLOUR MATCH BOX (NET RATE)", isSoldOut: false },
+        { id: 105, name: "JUMBO", image: "./img/jumbo.webp", originalPrice: 2750, currentPrice: 2750, category: "gift-boxes", subcategory: "CHILDREN'S COLOUR MATCH BOX (NET RATE)", isSoldOut: false },
+        { id: 106, name: "Bullet 10 in 1", image: "/placeholder.svg?height=200&width=280", originalPrice: 1450, currentPrice: 1450, category: "gift-boxes", subcategory: "CHILDREN'S COLOUR MATCH BOX (NET RATE)", isSoldOut: false },
+        // GIFT BOXES (NET RATE)
+        { id: 107, name: "Celebration Mania (19 Items)", image: "/placeholder.svg?height=200&width=280", originalPrice: 3000, currentPrice: 3000, category: "gift-boxes", subcategory: "GIFT BOXES (NET RATE)", isSoldOut: false },
+        { id: 108, name: "Motu Batlu/Toons (23 Items)", image: "./img/motubatlu.webp", originalPrice: 3500, currentPrice: 3500, category: "gift-boxes", subcategory: "GIFT BOXES (NET RATE)", isSoldOut: false },
+        { id: 109, name: "Mega Balaji (81 items)", image: "/placeholder.svg?height=200&width=280", originalPrice: 15000, currentPrice: 15000, category: "gift-boxes", subcategory: "GIFT BOXES (NET RATE)", isSoldOut: false }
+    ];
+    // Fetch orders from backend
+    function fetchOrders() {
+        const loadingMessage = document.getElementById('loadingMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const ordersTable = document.getElementById('ordersTable');
+        const noOrdersMessage = document.getElementById('noOrdersMessage');
+                    // Show loading
+        loadingMessage.style.display = 'block';
+        errorMessage.style.display = 'none';
+        ordersTable.style.display = 'none';
+        noOrdersMessage.style.display = 'none';
+                    fetch("http://localhost:8081/api/orders")
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                console.log("✅ Orders fetched:", data);
+                allOrders = data;
+                filteredOrders = [...allOrders];
+                displayOrders();
+                updateStats();
+                loadingMessage.style.display = 'none';
+                                    if (data.length === 0) {
+                    noOrdersMessage.style.display = 'block';
+                } else {
+                    ordersTable.style.display = 'table';
+                }
+            })
+            .catch(err => {
+                console.error("❌ Failed to load orders:", err);
+                loadingMessage.style.display = 'none';
+                errorMessage.style.display = 'block';
+                document.getElementById('errorText').textContent =
+                    `Failed to load orders: ${err.message}. Please check if the backend server is running on port 8081.`;
+            });
+    }
+    // Display orders in table
+    function displayOrders() {
+        const tbody = document.getElementById("ordersBody");
+        const ordersTable = document.getElementById('ordersTable');
+        const noOrdersMessage = document.getElementById('noOrdersMessage');
+                    tbody.innerHTML = "";
+                    if (filteredOrders.length === 0) {
+            ordersTable.style.display = 'none';
+            noOrdersMessage.style.display = 'block';
+            return;
+        }
+                    ordersTable.style.display = 'table';
+        noOrdersMessage.style.display = 'none';
+                    filteredOrders.forEach(order => {
+            const row = document.createElement("tr");
+                            // Format date
+            const orderDate = new Date(order.dateTime);
+            const formattedDate = orderDate.toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+            const formattedTime = orderDate.toLocaleTimeString('en-IN', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+                            // Format products with view button
+            const productsDisplay = (order.productList && order.productList.length > 0)
+                 ? `<button class="view-products-btn" onclick="openProductModal(${order.id}, '${order.customerName}', ${JSON.stringify(order.productList).replace(/"/g, '&quot;')})">
+                    <i class="fas fa-eye"></i> View Products (${order.productList.length})
+                   </button>`
+                : '<span style="color: #64748b; font-style: italic;">No products</span>';
+                            // Status badge
+            const statusClass = getStatusClass(order.status);
+                            row.innerHTML = `
+                <td><strong>#${order.id}</strong></td>
+                <td><strong>${order.customerName}</strong></td>
+                <td>
+                    <i class="fas fa-phone" style="color: #10b981; margin-right: 5px;"></i>
+                    +91 ${order.mobileNo}
+                </td>
+                <td>${order.customerAddress}</td>
+                <td class="products-list">${productsDisplay}</td>
+                <td class="amount">₹${order.amount.toFixed(2)}</td>
+                <td>
+                    <div>${formattedDate}</div>
+                    <small style="color: #64748b;">${formattedTime}</small>
+                </td>
+                <td>
+                    <span class="status-badge ${statusClass}" onclick="openStatusModal(${order.id}, '${order.status}')">${order.status}</span>
+                </td>
+            `;
+                            tbody.appendChild(row);
+        });
+    }
+    // Get status class for styling
+    function getStatusClass(status) {
+        switch (status?.toLowerCase()) {
+            case 'pending payment':
+            case 'pending':
+                return 'status-pending';
+            case 'confirmed':
+                return 'status-confirmed';
+            case 'shipped':
+                return 'status-shipped';
+            case 'dispatched':
+                return 'status-dispatched';
+            case 'delivered':
+                return 'status-delivered';
+            case 'cancelled':
+                return 'status-cancelled';
+            default:
+                return 'status-pending';
+        }
+    }
+    // Update statistics
+    function updateStats() {
+        const totalOrders = allOrders.length;
+        const totalRevenue = allOrders.reduce((sum, order) => sum + (order.amount || 0), 0);
+                    document.getElementById('totalOrders').textContent = totalOrders;
+        document.getElementById('totalRevenue').textContent = `₹${totalRevenue.toFixed(2)}`;
+    }
+    // Filter orders based on search input
+    function filterOrders() {
+        const searchTerm = document.getElementById("searchInput").value.toLowerCase().trim();
+                    if (searchTerm === "") {
+            filteredOrders = [...allOrders];
+        } else {
+            filteredOrders = allOrders.filter(order =>
+                order.customerName.toLowerCase().includes(searchTerm) ||
+                order.mobileNo.includes(searchTerm) ||
+                order.customerAddress.toLowerCase().includes(searchTerm) ||
+                (order.productList || []).some(product =>
+                     product.toLowerCase().includes(searchTerm)
+                )
+            );
+        }
+                    displayOrders();
+    }
+    // Status Modal Functions
+    function openStatusModal(orderId, currentStatus) {
+        currentOrderId = orderId;
+        selectedStatus = currentStatus;
+                    document.getElementById('modalOrderId').textContent = orderId;
+        document.getElementById('statusModal').style.display = 'block';
+                    // Reset selections
+        document.querySelectorAll('.status-option').forEach(option => {
+            option.classList.remove('selected');
+            if (option.dataset.status === currentStatus) {
+                option.classList.add('selected');
+            }
+        });
+    }
+    function closeStatusModal() {
+        document.getElementById('statusModal').style.display = 'none';
+        currentOrderId = null;
+        selectedStatus = null;
+    }
+    // Status option selection
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.status-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.status-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedStatus = this.dataset.status;
+            });
+        });
+    });
+    // Update order status
+    function updateOrderStatus() {
+        if (!currentOrderId || !selectedStatus) {
+            alert('Please select a status');
+            return;
+        }
+        fetch(`http://localhost:8081/api/orders/${currentOrderId}/status`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status: selectedStatus })
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log('Status updated:', data);
+            closeStatusModal();
+            fetchOrders(); // Refresh the orders
+            alert('Order status updated successfully!');
+        })
+        .catch(err => {
+            console.error('Error updating status:', err);
+            alert('Failed to update status. Please try again.');
+        });
+    }
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const statusModal = document.getElementById('statusModal');
+        const productModal = document.getElementById('productModal');
+        const addProductModal = document.getElementById('addProductModal');
+        const editProductModal = document.getElementById('editProductModal'); // New
+        if (event.target === statusModal) {
+            closeStatusModal();
+        }
+        if (event.target === productModal) {
+            closeProductModal();
+        }
+        if (event.target === addProductModal) {
+            closeAddProductModal();
+        }
+        if (event.target === editProductModal) { // New
+            closeEditProductModal();
+        }
+    }
+    // Product Modal Functions (for orders)
+    function openProductModal(orderId, customerName, productList) {
+        document.getElementById('productModalOrderId').textContent = orderId;
+        document.getElementById('productModalCustomer').textContent = customerName;
+                    const tbody = document.getElementById('productTableBody');
+        tbody.innerHTML = '';
+                    if (productList && productList.length > 0) {
+            productList.forEach((product, index) => {
+                // Parse product string to extract name and quantity
+                const productParts = product.split(' x ');
+                const productName = productParts[0] || product;
+                const quantity = productParts[1] || '1';
+                                    const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td class="product-name">${productName}</td>
+                    <td><span class="product-quantity">${quantity}</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+                            document.getElementById('productTable').style.display = 'table';
+            document.getElementById('noProductsMessage').style.display = 'none';
+        } else {
+            document.getElementById('productTable').style.display = 'none';
+            document.getElementById('noProductsMessage').style.display = 'block';
+        }
+        document.getElementById('productModal').style.display = 'block';
+    }
+    function closeProductModal() {
+        document.getElementById('productModal').style.display = 'none';
+    }
+    function exportToExcel() {
+        const orderId = document.getElementById('productModalOrderId').textContent;
+        const customerName = document.getElementById('productModalCustomer').textContent;
+        const table = document.getElementById('productTable');
+                    if (!table || table.style.display === 'none') {
+            alert('No products to export');
+            return;
+        }
+                    // Create CSV content
+        let csvContent = `Order ID: ${orderId}\nCustomer: ${customerName}\n\n`;
+        csvContent += "S.No,Product Name,Quantity\n";
+                    const rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            const rowData = Array.from(cells).map(cell => {
+                // Clean the text content
+                return cell.textContent.trim().replace(/,/g, ';');
+            });
+            csvContent += rowData.join(',') + '\n';
+        });
+                    // Create and download file
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `Order_${orderId}_Products.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+    // Product Management Functions
+    function loadProductsForAdmin() {
+        const savedProducts = localStorage.getItem('skCrackersProducts');
+        if (savedProducts) {
+            products = JSON.parse(savedProducts);
+        } else {
+            products = defaultProducts;
+            saveProductsForAdmin(); // Save default products to localStorage
+        }
+        displayProductsForAdmin(products);
+    }
+    function saveProductsForAdmin() {
+        localStorage.setItem('skCrackersProducts', JSON.stringify(products));
+        // Notify other tabs/windows (like order.html) about the change
+        window.dispatchEvent(new Event('storage'));
+     }
+     function displayProductsForAdmin(productsToShow) {
+        const tbody = document.getElementById('productsAdminBody');
+        const productsAdminTable = document.getElementById('productsAdminTable');
+        const noProductsAdminMessage = document.getElementById('noProductsAdminMessage');
+        tbody.innerHTML = '';
+        if (productsToShow.length === 0) {
+            productsAdminTable.style.display = 'none';
+            noProductsAdminMessage.style.display = 'block';
+            return;
+        }
+        productsAdminTable.style.display = 'table';
+        noProductsAdminMessage.style.display = 'none';
+        productsToShow.forEach(product => {
+            const row = document.createElement('tr');
+            const soldOutClass = product.isSoldOut ? 'active' : '';
+            const soldOutText = product.isSoldOut ? 'Sold Out' : 'In Stock';
+            row.innerHTML = `
+                <td>${product.id}</td>
+                <td><img src="${product.image}" alt="${product.name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;"></td>
+                <td>${product.name}</td>
+                <td>${product.category}</td>
+                <td>${product.subcategory}</td>
+                <td>₹${product.originalPrice}</td>
+                <td>₹${product.currentPrice}</td>
+                <td>
+                    <div class="sold-out-toggle ${soldOutClass}" onclick="toggleSoldOut(${product.id})"></div>
+                    <span class="sold-out-text-admin ${product.isSoldOut ? 'inactive' : 'active'}">${soldOutText}</span>
+                </td>
+                <td>
+                    <button class="edit-product-btn" onclick="openEditProductModal(${product.id})">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+    function toggleSoldOut(productId) {
+        const productIndex = products.findIndex(p => p.id === productId);
+        if (productIndex > -1) {
+            products[productIndex].isSoldOut = !products[productIndex].isSoldOut;
+            saveProductsForAdmin();
+            displayProductsForAdmin(products); // Re-render the product table
+        }
+    }
+    function filterProductsAdmin() {
+        const searchTerm = document.getElementById("productSearchInput").value.toLowerCase().trim();
+        let filtered = products.filter(product =>
+            product.name.toLowerCase().includes(searchTerm) ||
+            product.category.toLowerCase().includes(searchTerm) ||
+            product.subcategory.toLowerCase().includes(searchTerm)
+        );
+        displayProductsForAdmin(filtered);
+    }
+    // Add Product Modal Functions
+    function openAddProductModal() {
+        document.getElementById('addProductModal').style.display = 'block';
+        // Clear form fields
+        document.getElementById('newProductName').value = '';
+        document.getElementById('newProductImage').value = '/placeholder.svg?height=200&width=280';
+        document.getElementById('newOriginalPrice').value = '0';
+        document.getElementById('newCurrentPrice').value = '0';
+        document.getElementById('newProductCategory').value = 'bombs';
+        document.getElementById('newProductSubcategory').value = '';
+    }
+    function closeAddProductModal() {
+        document.getElementById('addProductModal').style.display = 'none';
+    }
+    function addNewProduct() {
+        const name = document.getElementById('newProductName').value.trim();
+        const image = document.getElementById('newProductImage').value.trim();
+        const originalPrice = parseFloat(document.getElementById('newOriginalPrice').value);
+        const currentPrice = parseFloat(document.getElementById('newCurrentPrice').value);
+        const category = document.getElementById('newProductCategory').value;
+        const subcategory = document.getElementById('newProductSubcategory').value.trim();
+        if (!name || !image || isNaN(originalPrice) || isNaN(currentPrice) || !category || !subcategory) {
+            alert('Please fill in all product details correctly.');
+            return;
+        }
+        const newProductId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+        const newProduct = {
+            id: newProductId,
+            name,
+            image,
+            originalPrice,
+            currentPrice,
+            category,
+            subcategory,
+            isSoldOut: false // New products are in stock by default
+        };
+        products.push(newProduct);
+        saveProductsForAdmin();
+        displayProductsForAdmin(products); // Re-render the product table
+        closeAddProductModal();
+        alert('Product added successfully!');
+    }
+
+    // New: Edit Product Modal Functions
+    function openEditProductModal(productId) {
+        currentEditingProductId = productId;
+        const product = products.find(p => p.id === productId);
+
+        if (!product) {
+            alert('Product not found!');
+            return;
+        }
+
+        document.getElementById('editProductId').textContent = product.id;
+        document.getElementById('editProductName').value = product.name;
+        document.getElementById('editProductImage').value = product.image;
+        document.getElementById('editOriginalPrice').value = product.originalPrice;
+        document.getElementById('editCurrentPrice').value = product.currentPrice;
+        document.getElementById('editProductCategory').value = product.category;
+        document.getElementById('editProductSubcategory').value = product.subcategory;
+
+        // Set the sold out toggle state
+        const editSoldOutToggle = document.getElementById('editSoldOutToggle');
+        const editSoldOutText = document.getElementById('editSoldOutText');
+        if (product.isSoldOut) {
+            editSoldOutToggle.classList.add('active');
+            editSoldOutText.textContent = 'Sold Out';
+            editSoldOutText.classList.remove('active');
+            editSoldOutText.classList.add('inactive');
+        } else {
+            editSoldOutToggle.classList.remove('active');
+            editSoldOutText.textContent = 'In Stock';
+            editSoldOutText.classList.remove('inactive');
+            editSoldOutText.classList.add('active');
+        }
+
+        document.getElementById('editProductModal').style.display = 'block';
+    }
+
+    function closeEditProductModal() {
+        document.getElementById('editProductModal').style.display = 'none';
+        currentEditingProductId = null;
+    }
+
+    function toggleEditSoldOut() {
+        const editSoldOutToggle = document.getElementById('editSoldOutToggle');
+        const editSoldOutText = document.getElementById('editSoldOutText');
+        const isCurrentlySoldOut = editSoldOutToggle.classList.contains('active');
+
+        if (isCurrentlySoldOut) {
+            editSoldOutToggle.classList.remove('active');
+            editSoldOutText.textContent = 'In Stock';
+            editSoldOutText.classList.remove('inactive');
+            editSoldOutText.classList.add('active');
+        } else {
+            editSoldOutToggle.classList.add('active');
+            editSoldOutText.textContent = 'Sold Out';
+            editSoldOutText.classList.remove('active');
+            editSoldOutText.classList.add('inactive');
+        }
+    }
+
+    function updateProduct() {
+        if (currentEditingProductId === null) {
+            alert('No product selected for editing.');
+            return;
+        }
+
+        const productIndex = products.findIndex(p => p.id === currentEditingProductId);
+        if (productIndex === -1) {
+            alert('Product not found in inventory.');
+            return;
+        }
+
+        const name = document.getElementById('editProductName').value.trim();
+        const image = document.getElementById('editProductImage').value.trim();
+        const originalPrice = parseFloat(document.getElementById('editOriginalPrice').value);
+        const currentPrice = parseFloat(document.getElementById('editCurrentPrice').value);
+        const category = document.getElementById('editProductCategory').value;
+        const subcategory = document.getElementById('editProductSubcategory').value.trim();
+        const isSoldOut = document.getElementById('editSoldOutToggle').classList.contains('active');
+
+        if (!name || !image || isNaN(originalPrice) || isNaN(currentPrice) || !category || !subcategory) {
+            alert('Please fill in all product details correctly.');
+            return;
+        }
+
+        products[productIndex] = {
+            ...products[productIndex], // Keep existing properties
+            name,
+            image,
+            originalPrice,
+            currentPrice,
+            category,
+            subcategory,
+            isSoldOut
+        };
+
+        saveProductsForAdmin();
+        displayProductsForAdmin(products); // Re-render the product table
+        closeEditProductModal();
+        alert('Product updated successfully!');
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchOrders();
+        loadProductsForAdmin(); // Load and display products for admin
+                    // Auto-refresh orders every 30 seconds
+        setInterval(fetchOrders, 30000);
+    });
+    // Add keyboard shortcut for refresh (Ctrl+R or F5)
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey && e.key === 'r') || e.key === 'F5') {
+            e.preventDefault();
+            fetchOrders();
+            loadProductsForAdmin(); // Also refresh products
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - SK Crackers</title>
+    <link rel="icon" href="./assets/logo-transparent.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Arial", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10zm10 8c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm40 40c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: -1;
+        }
+        .checkout-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff6b35;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            color: #1e293b;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .header p {
+            font-size: 1.1rem;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+        .order-summary {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #ff6b35;
+        }
+        .order-summary h3 {
+            color: #1e293b;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .order-summary-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 5px 0;
+        }
+        .order-summary-details:last-child {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 10px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #059669;
+        }
+        .checkout-form {
+            width: 100%;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .form-label {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+        .input-wrapper {
+            position: relative;
+        }
+        .form-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #ff6b35;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+        .input-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 1.2rem;
+        }
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #ff6b35, #f59e0b);
+            color: white;
+            padding: 18px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(255, 107, 53, 0.4);
+        }
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .back-btn {
+            width: 100%;
+            background: #6b7280;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        .back-btn:hover {
+            background: #4b5563;
+            transform: translateY(-1px);
+        }
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .success-section {
+            margin-top: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            display: none;
+        }
+        .success-section.show {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+        .success-card {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 2px solid #10b981;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.1);
+        }
+        .success-icon {
+            font-size: 3rem;
+            color: #10b981;
+            margin-bottom: 15px;
+        }
+        .success-title {
+            font-size: 1.8rem;
+            color: #1e293b;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .success-message {
+            color: #64748b;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        .customer-details {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 4px solid #10b981;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-label {
+            font-weight: bold;
+            color: #374151;
+        }
+        .detail-value {
+            color: #1e293b;
+            font-weight: 600;
+        }
+        .amount-highlight {
+            color: #059669 !important;
+            font-size: 1.1rem;
+        }
+        .whatsapp-btn {
+            background: linear-gradient(45deg, #25d366, #128c7e);
+            color: white;
+            padding: 18px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+        .whatsapp-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(37, 211, 102, 0.4);
+        }
+        .note {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            color: #92400e;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .note-icon {
+            color: #f59e0b;
+            margin-right: 8px;
+        }
+        @media (max-width: 768px) {
+            .checkout-container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .header p {
+                font-size: 1rem;
+            }
+            .form-input {
+                padding: 12px 45px 12px 15px;
+                font-size: 1rem;
+            }
+            .submit-btn, .whatsapp-btn {
+                padding: 15px 25px;
+                font-size: 1.1rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .checkout-container {
+                padding: 25px 15px;
+            }
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            .success-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <div class="header">
+            <div class="logo">SK Cracker's</div>
+            <h1>Checkout</h1>
+            <p>Complete your order by providing your details</p>
+        </div>
+        
+        <div class="order-summary">
+            <h3>
+                <i class="fas fa-shopping-cart"></i>
+                Your Order Summary
+            </h3>
+            <div id="orderSummaryDetails">
+                <!-- Order details will be populated by JavaScript -->
+            </div>
+        </div>
+        
+        <form class="checkout-form" id="checkoutForm">
+            <div class="form-group">
+                <label for="customerName" class="form-label">Full Name</label>
+                <div class="input-wrapper">
+                    <input 
+                        type="text"
+                        id="customerName"
+                        name="customerName"
+                        placeholder="Enter your full name *"
+                        required
+                        class="form-input"
+                    >
+                    <i class="fas fa-user input-icon"></i>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="mobileNo" class="form-label">Mobile Number</label>
+                <div class="input-wrapper">
+                    <input 
+                        type="tel"
+                        id="mobileNo"
+                        name="mobileNo"
+                        placeholder="Enter your mobile number *"
+                        required
+                        maxlength="10"
+                        pattern="[0-9]{10}"
+                        class="form-input"
+                    >
+                    <i class="fas fa-phone input-icon"></i>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="customerAddress" class="form-label">Address</label>
+                <div class="input-wrapper">
+                    <input 
+                        type="text"
+                        id="customerAddress"
+                        name="customerAddress"
+                        placeholder="Enter your address *"
+                        required
+                        class="form-input"
+                    >
+                    <i class="fas fa-map-marker-alt input-icon"></i>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <i class="fas fa-check-circle"></i>
+                <span>Submit Order</span>
+            </button>
+        </form>
+        
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Back to Shopping
+        </a>
+        
+        <div class="success-section" id="successSection">
+            <div class="success-card">
+                <i class="fas fa-check-circle success-icon"></i>
+                <h2 class="success-title">Order Submitted Successfully!</h2>
+                <p class="success-message">
+                    Thank you for your order! Your details have been saved. Click the WhatsApp button below to contact us for payment details and QR code.
+                </p>
+                
+                <div class="customer-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Name:</span>
+                        <span class="detail-value" id="displayName">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Mobile:</span>
+                        <span class="detail-value" id="displayMobile">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Address:</span>
+                        <span class="detail-value" id="displayAddress">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Amount:</span>
+                        <span class="detail-value amount-highlight" id="displayAmount">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Order Date:</span>
+                        <span class="detail-value" id="orderDate">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Status:</span>
+                        <span class="detail-value" style="color: #f59e0b; font-weight: bold;">Pending Payment</span>
+                    </div>
+                </div>
+                
+                <button class="whatsapp-btn" id="whatsappBtn">
+                    <i class="fab fa-whatsapp"></i>
+                    Contact for Payment Details
+                </button>
+                
+                <div class="note">
+                    <i class="fas fa-info-circle note-icon"></i>
+                    <strong>Next Steps:</strong> Click the WhatsApp button above to contact us. We will share payment details and QR code for your order completion.
+                </div>
+                
+                <a href="index.html" class="back-btn" style="margin-top: 15px;">
+                    <i class="fas fa-arrow-left"></i>
+                    Place Another Order
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cartData = [];
+        let cartTotal = 0;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCartData();
+            displayOrderSummary();
+        });
+
+        function loadCartData() {
+            const savedCart = localStorage.getItem('skCrackersCart');
+            if (savedCart) {
+                cartData = JSON.parse(savedCart);
+                cartTotal = cartData.reduce((sum, item) => sum + (item.currentPrice * item.quantity), 0);
+            }
+        }
+
+        function displayOrderSummary() {
+            const orderSummaryDetails = document.getElementById('orderSummaryDetails');
+            const totalItems = cartData.reduce((sum, item) => sum + item.quantity, 0);
+            orderSummaryDetails.innerHTML = `
+                <div class="order-summary-details">
+                    <span>Total Items:</span>
+                    <span>${totalItems}</span>
+                </div>
+                <div class="order-summary-details">
+                    <span>Total Amount:</span>
+                    <span>₹${cartTotal.toFixed(2)}</span>
+                </div>
+            `;
+        }
+
+        function getCurrentDateTime() {
+            const now = new Date();
+            const date = now.toLocaleDateString('en-IN');
+            const time = now.toLocaleTimeString('en-IN', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            return `${date} ${time}`;
+        }
+
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const customerName = document.getElementById('customerName').value.trim();
+            const mobileNo = document.getElementById('mobileNo').value.trim();
+            const customerAddress = document.getElementById('customerAddress').value.trim();
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Validate inputs
+            if (!customerName) {
+                alert('Please enter your full name');
+                document.getElementById('customerName').focus();
+                return;
+            }
+            if (mobileNo.length !== 10 || !/^[0-9]+$/.test(mobileNo)) {
+                alert('Please enter a valid 10-digit mobile number');
+                document.getElementById('mobileNo').focus();
+                return;
+            }
+            if (!customerAddress) {
+                alert('Please enter your address');
+                document.getElementById('customerAddress').focus();
+                return;
+            }
+            
+            // Show loading state
+            const originalContent = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<div class="spinner"></div><span>Submitting...</span>';
+            submitBtn.disabled = true;
+            
+            // Convert cart to productList format
+            const productList = cartData.map(item => `${item.name} x ${item.quantity}`);
+            
+            const orderData = {
+                name: customerName,
+                mobile: mobileNo,
+                address: customerAddress,
+                productList: productList,
+                totalAmount: cartTotal
+            };
+            
+            // Send to backend
+            fetch("https://sk-crackers-backend-1.onrender.com/api/orders", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(orderData)
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("Failed to submit order");
+                return res.json();
+            })
+            .then(data => {
+                console.log("✅ Order Success:", data);
+                showSuccessSection(data);
+                localStorage.removeItem("skCrackersCart"); // Clear cart
+            })
+            .catch(err => {
+                console.error("❌ Order failed:", err);
+                alert("Failed to submit order. Please try again.");
+            })
+            .finally(() => {
+                // Reset button
+                submitBtn.innerHTML = originalContent;
+                submitBtn.disabled = false;
+            });
+        });
+
+        function showSuccessSection(order) {
+            const successSection = document.getElementById('successSection');
+            
+            // Update display fields
+            document.getElementById('displayName').textContent = order.customerName;
+            document.getElementById('displayMobile').textContent = '+91 ' + order.mobileNo;
+            document.getElementById('displayAddress').textContent = order.customerAddress;
+            document.getElementById('displayAmount').textContent = '₹' + order.amount.toFixed(2);
+            document.getElementById('orderDate').textContent = getCurrentDateTime();
+            
+            // Show success section
+            document.getElementById('checkoutForm').style.display = 'none';
+            successSection.style.display = 'block';
+            successSection.classList.add('show');
+            
+            // Scroll to success section
+            setTimeout(() => {
+                successSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 300);
+        }
+
+        // WhatsApp button handler
+        document.getElementById('whatsappBtn').addEventListener('click', function() {
+            const customerName = document.getElementById('displayName').textContent;
+            const customerMobile = document.getElementById('displayMobile').textContent;
+            const customerAddress = document.getElementById('displayAddress').textContent;
+            const orderAmount = document.getElementById('displayAmount').textContent;
+            const orderDate = document.getElementById('orderDate').textContent;
+            
+            const message = encodeURIComponent(
+                ` *SK Crackers - New Order* \n\n` +
+                ` *Customer Name:* ${customerName}\n` +
+                ` *Mobile Number:* ${customerMobile}\n` +
+                ` *Address:* ${customerAddress}\n` +
+                ` *Order Amount:* ${orderAmount}\n` +
+                ` *Order Date:* ${orderDate}\n` +
+                ` *Status:* Pending Payment\n\n` +
+                `Hello! I have placed an order for crackers worth ${orderAmount}. Please share the payment details and QR code to complete my order. Thank you! `
+            );
+            
+            window.open(`https://wa.me/917845229961?text=${message}`, '_blank');
+        });
+
+        // Input formatting for mobile number
+        document.getElementById('mobileNo').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+        });
+
+        // Name input validation (only letters and spaces)
+        document.getElementById('customerName').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+        });
+    </script>
+</body>
+</html>
